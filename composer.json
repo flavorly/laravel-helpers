@@ -1,0 +1,70 @@
+{
+    "name": "flavorly/laravel-helpers",
+    "description": "A tool of tiny but useful Laravel Helpers that we use across our projects",
+    "keywords": [
+        "flavorly",
+        "laravel",
+        "laravel helpers"
+    ],
+    "homepage": "https://github.com/flavorly/laravel-helpers",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jon",
+            "email": "support@indigit.pt",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "laravel/framework": "^v11.0.0",
+        "illuminate/contracts": "^11.8.0",
+        "spatie/laravel-data": "^4.5",
+        "spatie/laravel-typescript-transformer": "^2.4",
+        "spatie/laravel-package-tools": "^1.16"
+    },
+    "require-dev": {
+        "larastan/larastan": "^v2.9.6",
+        "laravel/pint": "^1.15",
+        "nunomaduro/collision": "^v8.1.1",
+        "orchestra/testbench": "^9.1.0",
+        "pestphp/pest": "^2.34",
+        "pestphp/pest-plugin-arch": "^2.7",
+        "pestphp/pest-plugin-laravel": "^2.4",
+        "spatie/laravel-ray": "^1.36"
+    },
+    "autoload": {
+        "psr-4": {
+            "Flavorly\\LaravelHelpers\\": "src"
+        },
+        "files": [
+            "src/Helpers/generic.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Flavorly\\LaravelHelpers\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Flavorly\\LaravelHelpers\\LaravelHelpersServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
