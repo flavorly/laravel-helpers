@@ -232,7 +232,7 @@ class ReactiveException extends Exception
      */
     protected function toInertia(): void
     {
-       // Implement this method with notifications, dialog, etc.
+        // Implement this method with notifications, dialog, etc.
     }
 
     /**
