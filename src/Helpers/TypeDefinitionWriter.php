@@ -1,5 +1,7 @@
 <?php
 
+namespace Flavorly\LaravelHelpers\Helpers;
+
 use Illuminate\Support\Str;
 use Spatie\TypeScriptTransformer\Structures\TypesCollection;
 use Spatie\TypeScriptTransformer\Writers\TypeDefinitionWriter as BaseWriter;

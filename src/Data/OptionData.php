@@ -1,5 +1,7 @@
 <?php
 
+namespace Flavorly\LaravelHelpers\Data;
+
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
