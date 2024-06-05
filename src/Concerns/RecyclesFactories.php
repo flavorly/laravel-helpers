@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Concerns;
+namespace Flavorly\LaravelHelpers\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;

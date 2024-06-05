@@ -42,6 +42,8 @@ class ReactiveException extends Exception
 
     /**
      * Adds additional data to default api response.
+     *
+     * @var array<string|int,mixed>
      */
     protected array $appends = [];
 
@@ -97,6 +99,7 @@ class ReactiveException extends Exception
     /**
      * Appends additional data to api response.
      *
+     * @param  array<string|int,mixed>  $data
      * @return $this
      */
     public function appends(array $data): static
@@ -180,7 +183,8 @@ class ReactiveException extends Exception
 
     /**
      * Converts the exception to an array.
-     * return array<string, mixed>
+     *
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
@@ -257,7 +261,8 @@ class ReactiveException extends Exception
     public function response(?Request $request = null): null|bool|string|RedirectResponse|Response
     {
         $request = $request ?? request();
-        if ($request->isInertia()) {
+        $isInertia = method_exists($request, 'isInertia') || filled($request->header('X-Inertia'));
+        if ($isInertia) {
             $this->toInertia();
             throw ValidationException::withMessages([$this->type => $this->getMessage()]);
         }
