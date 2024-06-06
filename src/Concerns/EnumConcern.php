@@ -2,6 +2,7 @@
 
 namespace Flavorly\LaravelHelpers\Concerns;
 
+use Flavorly\LaravelHelpers\Data\OptionData;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
