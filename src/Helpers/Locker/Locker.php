@@ -93,7 +93,7 @@ class Locker
             if ($lock->block($this->waitForLock, $closure)) {
                 $this->owner = $lock->owner();
 
-                return (string)$this->owner;
+                return (string) $this->owner;
             }
         } catch (LockTimeoutException $exception) {
             if ($this->executedIfAlreadyLocked && $closure) {
@@ -181,7 +181,7 @@ class Locker
      */
     public function restore(): Lock
     {
-        return Cache::restoreLock($this->getId(), (string)$this->owner);
+        return Cache::restoreLock($this->getId(), (string) $this->owner);
     }
 
     /**
