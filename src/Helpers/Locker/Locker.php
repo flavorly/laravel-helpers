@@ -23,7 +23,7 @@ class Locker
         protected bool $executedIfAlreadyLocked = false,
         protected int $lockFor = 10,
         protected int $waitForLock = 3,
-        protected mixed $owner = null
+        protected ?string $owner = null
     ) {
         if (config('cache.default') !== 'redis') {
             throw new Exception('Cache driver must be redis');
@@ -69,7 +69,7 @@ class Locker
     /**
      * Get the actual Lock Owner
      */
-    public function getOwner(): mixed
+    public function getOwner(): ?string
     {
         return $this->owner;
     }
@@ -93,7 +93,7 @@ class Locker
             if ($lock->block($this->waitForLock, $closure)) {
                 $this->owner = $lock->owner();
 
-                return $this->owner;
+                return (string)$this->owner;
             }
         } catch (LockTimeoutException $exception) {
             if ($this->executedIfAlreadyLocked && $closure) {
@@ -181,7 +181,7 @@ class Locker
      */
     public function restore(): Lock
     {
-        return Cache::restoreLock($this->getId(), $this->owner);
+        return Cache::restoreLock($this->getId(), (string)$this->owner);
     }
 
     /**

@@ -35,6 +35,7 @@ final class RateLimiterHelper
     /**
      * Forwards the call to the RateLimiter instance.
      *
+     * @param array<int|string, mixed> $arguments
      * @return mixed
      */
     public function __call(string $name, array $arguments)

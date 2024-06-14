@@ -34,7 +34,7 @@ trait EnumConcern
             return $labels[$this->value] ?? null;
         }
 
-        return trans('enums.'.$this->getTranslationNamespace().'.'.$this->value);
+        return trans($this->getTranslationNamespace().'.'.$this->value);
     }
 
     /**
@@ -64,7 +64,15 @@ trait EnumConcern
     {
         $namespace = Str::snake(class_basename($this));
 
-        return Str::finish($namespace, '_enum') ? Str::replaceLast('_enum', '', $namespace) : $namespace;
+        return $this->packagePrefix().'enums.'.Str::finish($namespace, '_enum') ? Str::replaceLast('_enum', '', $namespace) : $namespace;
+    }
+
+    /**
+     * Should this be used inside a package, specify here the package prefix
+     */
+    public function packagePrefix(): string
+    {
+        return '';
     }
 
     /**

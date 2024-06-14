@@ -17,6 +17,7 @@ class TrimString implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): string
     {
+        // @phpstan-ignore-next-line
         return (string) preg_replace('/\s+/', '', $value ?? '');
     }
 
