@@ -60,7 +60,7 @@ final class StrMacros implements RegistersMacros
                 ->values()
                 ->whenNotEmpty(function (Collection $words): string {
                     return trim($words->first().' '.$words->last());
-                }, $string);
+                }, fn () => $string);
         });
     }
 
