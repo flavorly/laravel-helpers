@@ -7,6 +7,7 @@ use Brick\Money\Money;
 use Flavorly\LaravelHelpers\Contracts\RegistersMacros;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 final class StrMacros implements RegistersMacros
@@ -16,6 +17,7 @@ final class StrMacros implements RegistersMacros
         self::normalizeCharacters();
         self::acronimize();
         self::username();
+        self::firstAndLastWords();
         self::money();
         self::spin();
     }
@@ -46,6 +48,19 @@ final class StrMacros implements RegistersMacros
             }
 
             return $username;
+        });
+    }
+
+    public static function firstAndLastWords(): void
+    {
+        Str::macro('firstAndLastWords', function (string $string): string {
+            return Str::of($string)
+                ->explode(' ')
+                ->filter()
+                ->values()
+                ->whenNotEmpty(function (Collection $words): string {
+                    return trim($words->first().' '.$words->last());
+                }, $string);
         });
     }
 
