@@ -64,7 +64,7 @@ trait EnumConcern
     {
         $namespace = Str::snake(class_basename($this));
 
-        return $this->packagePrefix().'enums.'.Str::finish($namespace, '_enum') ? Str::replaceLast('_enum', '', $namespace) : $namespace;
+        return $this->packagePrefix().'enums.'.(Str::finish($namespace, '_enum') ? Str::replaceLast('_enum', '', $namespace) : $namespace);
     }
 
     /**
