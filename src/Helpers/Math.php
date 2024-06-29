@@ -21,8 +21,7 @@ class Math
     public function __construct(
         protected int $floatScale,
         protected int $integerScale = 20,
-    ) {
-    }
+    ) {}
 
     /**
      * Converts a float into a integer based on the given scale
