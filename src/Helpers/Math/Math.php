@@ -8,26 +8,20 @@ use Brick\Math\RoundingMode;
 final class Math
 {
     protected BigDecimal $number;
-    protected int $scale;
 
     public function __construct(
-        protected int $defaultScale = 2,
-        protected RoundingMode $roundingMode = RoundingMode::HALF_DOWN
+        protected int $scale = 2,
+        protected RoundingMode $roundingMode = RoundingMode::DOWN
     ) {}
 
-    public function of(float|int|string $number, ?int $scale = null): self
+    public static function of(float|int|string $number, ?int $scale = null, ?RoundingMode $roundingMode = null): self
     {
-        return (new Math($this->defaultScale, $this->roundingMode))->init($number, $scale);
+        $instance = new self($scale ?? 2, $roundingMode ?? RoundingMode::DOWN);
+        $instance->number = BigDecimal::of($number);
+        return $instance;
     }
 
-    protected function init(float|int|string $number, ?int $scale = null): self
-    {
-        $this->number = BigDecimal::of($number);
-        $this->scale = $scale ?? $this->defaultScale;
-        return $this;
-    }
-
-    protected function toBigDecimal(float|int|string $value): BigDecimal
+    public function toBigDecimal(float|int|string $value): BigDecimal
     {
         // We cant use toScale here because it will round the number, and we want to keep the rounding mode
         return BigDecimal::of($value);
@@ -39,52 +33,81 @@ final class Math
         return $this;
     }
 
+    public function roundDown(): self
+    {
+        $this->roundingMode = RoundingMode::DOWN;
+        return $this;
+    }
+
+    public function roundUp(): self
+    {
+        $this->roundingMode = RoundingMode::UP;
+        return $this;
+    }
+
+    public function scale(int $scale): self
+    {
+        $this->scale = $scale;
+        return $this;
+    }
+
     public function sum(float|int|string $value): self
     {
-        $this->of($this->number->plus($this->toBigDecimal($value)));
-        return $this;
+        $new = new self($this->scale, $this->roundingMode);
+        $new->number = $this->number->plus(BigDecimal::of($value));
+        return $new;
     }
 
     public function subtract(float|int|string $value): self
     {
-        $this->of($this->number->minus($this->toBigDecimal($value)));
-        return $this;
+        $new = new self($this->scale, $this->roundingMode);
+        $new->number = $this->number->minus($this->toBigDecimal($value));
+        return $new;
     }
 
     public function multiply(float|int|string $value): self
     {
-        $this->of($this->number->multipliedBy($this->toBigDecimal($value)));
-        return $this;
+        $new = new self($this->scale, $this->roundingMode);
+        $new->number = $this->number->multipliedBy($this->toBigDecimal($value));
+        return $new;
     }
 
     public function divide(float|int|string $value): self
     {
-        $this->of($this->number->dividedBy($this->toBigDecimal($value), $this->scale, $this->roundingMode));
-        return $this;
+        $new = new self($this->scale, $this->roundingMode);
+        $new->number = $this->number->dividedBy($this->toBigDecimal($value), $this->scale, $this->roundingMode);
+        return $new;
     }
 
     public function pow(int $exponent): self
     {
-        $this->of($this->number->power($exponent));
-        return $this;
+        $new = new self($this->scale, $this->roundingMode);
+        $new->number = $this->number->power($exponent);
+        return $new;
     }
 
     public function round(int $precision = 0, ?RoundingMode $roundingMode = null): self
     {
-        $this->of($this->number->toScale($precision, $roundingMode ?? $this->roundingMode));
-        return $this;
+        $new = new self($this->scale, $this->roundingMode);
+        $new->number = $this->number->toScale($precision, $roundingMode ?? $this->roundingMode);
+
+        return $new;
     }
 
     public function ceil(): self
     {
-        $this->of($this->number->dividedBy(BigDecimal::one(), 0, RoundingMode::CEILING));
-        return $this;
+        $new = new self($this->scale, $this->roundingMode);
+        $new->number = $this->number->dividedBy(BigDecimal::one(), 0, RoundingMode::CEILING);
+
+        return $new;
     }
 
     public function floor(): self
     {
-        $this->of($this->number->dividedBy(BigDecimal::one(), 0, RoundingMode::FLOOR));
-        return $this;
+        $new = new self($this->scale, $this->roundingMode);
+        $new->number = $this->number->dividedBy(BigDecimal::one(), 0, RoundingMode::FLOOR);
+
+        return $new;
     }
 
     public function absolute(): self
@@ -110,7 +133,11 @@ final class Math
             ->dividedBy(100, $this->scale, $this->roundingMode);
 
         $newNumber = $this->number->plus($percentageValue);
-        return $this->of($newNumber, $this->scale);
+
+        $new = new self($this->scale, $this->roundingMode);
+        $new->number = $newNumber;
+
+        return $new;
     }
 
     public function subtractPercentage(float|int|string $percentage): self
@@ -121,7 +148,11 @@ final class Math
             ->dividedBy(100, $this->scale, $this->roundingMode);
 
         $newNumber = $this->number->minus($percentageValue);
-        return $this->of($newNumber, $this->scale);
+
+        $new = new self($this->scale, $this->roundingMode);
+        $new->number = $newNumber;
+
+        return $new;
     }
 
     public function compare(float|int|string $value): int
@@ -166,7 +197,7 @@ final class Math
 
     public function toInt(): int
     {
-        return $this->number->toInt();
+        return $this->number->toScale(0, $this->roundingMode)->toInt();
     }
 
     public function toFloat(): float
