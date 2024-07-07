@@ -1,6 +1,6 @@
 <?php
 
-namespace Flavorly\LaravelHelpers\Helpers;
+namespace Flavorly\LaravelHelpers\Helpers\Math;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\DivisionByZeroException;
@@ -16,7 +16,7 @@ use Brick\Math\RoundingMode;
  * Please see Brick\Money for more information about the concept
  * on why we use Integers instead of floats
  */
-class Math
+class MathOld
 {
     public function __construct(
         protected int $floatScale,
