@@ -5,10 +5,6 @@ use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\RoundingMode;
 use Flavorly\LaravelHelpers\Helpers\Math\Math;
 
-beforeEach(function () {
-    $this->math = new Math();
-});
-
 it('performs basic sum operations', function ($initial, $addend, $expected, $scale = null) {
     $math = Math::of($initial, $scale);
     $result = $math->sum($addend)->toFloat();
@@ -27,7 +23,7 @@ it('performs basic sum operations', function ($initial, $addend, $expected, $sca
 ]);
 
 it('can chain sum operations', function () {
-    $result = $this->math->of(5)
+    $result = Math::of(5)
         ->sum(3)
         ->sum(2)
         ->sum(1.5)
@@ -297,6 +293,8 @@ it('compares numbers correctly', function () {
     // Comparing negative numbers
     expect(Math::of(-5)->isLessThan(-3))->toBeTrue();
     expect(Math::of(-3)->isGreaterThan(-5))->toBeTrue();
+
+    expect(Math::of(10.0313131)->scale(10)->isLessThan(9.0313131))->toBeFalse();
 });
 
 it('performs utility operations correctly', function () {
