@@ -237,7 +237,6 @@ it('performs basic arithmetic operations correctly', function () {
         ->toString()
     )->toBe('36.00');
 
-
     // Operations with negative numbers
     expect(Math::of(-5)->subtract(3)->toFloat())->toBe(-8.00);
     expect(Math::of(-5)->multiply(-2)->toFloat())->toBe(10.00);
@@ -393,7 +392,6 @@ it('give the percentage of the number', function () {
     expect(Math::of(123.45)->toPercentageOf(50)->toFloat())->toBe(61.72);
     expect(Math::of(99.99)->toPercentageOf(10)->toFloat())->toBe(9.99);
 });
-
 
 it('calculates percentage difference correctly', function () {
 
