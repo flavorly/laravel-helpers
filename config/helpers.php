@@ -1,6 +1,5 @@
 <?php
 
-
 return [
     /*
     |--------------------------------------------------------------------------
@@ -14,5 +13,5 @@ return [
         'scale' => 10,
         'storage_scale' => 10,
         'rounding_mode' => \Brick\Math\RoundingMode::DOWN,
-    ]
+    ],
 ];

@@ -55,16 +55,18 @@ final class Math
 
         return new Math(
             $number,
-            $scale ?? config('helpers.math.scale', 10),
-            $storageScale ?? config('helpers.math.scale', 10),
+            // @phpstan-ignore-next-line
+            $scale ?? (int) config('helpers.math.scale', 10),
+            // @phpstan-ignore-next-line
+            $storageScale ?? (int) config('helpers.math.scale', 10),
+            // @phpstan-ignore-next-line
             $roundingMode ?? config('helpers.math.rounding_mode', RoundingMode::DOWN)
         );
     }
 
     /**
-     *
      * @param  int|float|string|BigDecimal  ...$numbers
-     * @return Math
+     *
      * @throws DivisionByZeroException
      * @throws MathException
      * @throws NumberFormatException
@@ -573,9 +575,10 @@ final class Math
      */
     public function toNumber(): BigDecimal
     {
-        if($this->number instanceof BigDecimal){
+        if ($this->number instanceof BigDecimal) {
             return $this->number;
         }
+
         return BigDecimal::of($this->number);
     }
 
