@@ -46,14 +46,14 @@ final class Math
     /**
      * A static factory method to create a new instance of the class.
      *
-     * @param  float|int|string  $number
+     * @param  float|int|string|BigDecimal  $number
      * @param  int|null  $scale
      * @param  int|null  $storageScale
      * @param  RoundingMode|null  $roundingMode
      * @return Math
      */
     public static function of(
-        float|int|string $number,
+        float|int|string|BigDecimal $number,
         ?int $scale = null,
         ?int $storageScale = null,
         ?RoundingMode $roundingMode = null
@@ -68,15 +68,38 @@ final class Math
     }
 
     /**
+     * @param ...$numbers
+     * @return Math
+     * @throws DivisionByZeroException
+     * @throws MathException
+     * @throws NumberFormatException
+     */
+    public static function average(...$numbers): Math
+    {
+        /** @var Math $sum */
+        $sum = array_reduce(
+            $numbers,
+            fn($carry, $num) => self::of($carry)->sum(BigDecimal::of($num)),
+            BigDecimal::zero()
+        );
+        ray('sum', $sum);
+        return self::of($sum->divide(count($numbers)));
+    }
+
+
+    /**
      * Converts a float, int or string to a BigDecimal
      *
-     * @param  float|int|string  $value
+     * @param  float|int|string|BigDecimal  $value
      * @return BigDecimal
      * @throws DivisionByZeroException
      * @throws NumberFormatException
      */
-    public function toBigDecimal(float|int|string $value): BigDecimal
+    public function toBigDecimal(float|int|string|BigDecimal $value): BigDecimal
     {
+        if($value instanceof BigDecimal){
+            return $value;
+        }
         return BigDecimal::of($value);
     }
 
@@ -455,6 +478,54 @@ final class Math
     }
 
     /**
+     * Get the percentage of the current number compared to the given total
+     * @param  float|int|string|BigDecimal  $total
+     * @return float
+     * @throws DivisionByZeroException
+     * @throws MathException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     */
+    public function percentageOf(float|int|string|BigDecimal $total): float
+    {
+        $percentage = $this
+            ->number
+            ->dividedBy($this->toBigDecimal($total), $this->storageScale, $this->roundingMode)
+            ->multipliedBy(100);
+        return $percentage->toScale($this->scale, $this->roundingMode)->toFloat();
+    }
+
+
+    /**
+     * Calculates the percentage difference between two numbers
+     *
+     * @param  float|int|string|BigDecimal  $value
+     * @return float
+     * @throws DivisionByZeroException
+     * @throws MathException
+     * @throws NumberFormatException
+     */
+    public function differenceInPercentage(float|int|string|BigDecimal $value): float
+    {
+        $original = $this->number;
+        $comparisonValue = $this->toBigDecimal($value);
+        $difference = $original->minus($comparisonValue)->abs();
+
+        if ($original->isZero() && $comparisonValue->isZero()) {
+            return 0.0;
+        }
+
+        if ($original->isZero()) {
+            return 100.0;
+        }
+
+        $percentage = $difference->dividedBy($original->abs(), $this->storageScale, $this->roundingMode)
+            ->multipliedBy(100);
+
+        return $percentage->toScale($this->scale, $this->roundingMode)->toFloat();
+    }
+
+    /**
      * Checks if the current number is equal to another value
      *
      * @param  float|int|string  $value
@@ -588,6 +659,20 @@ final class Math
     public function toString(): string
     {
         return $this->number->toScale($this->scale, $this->roundingMode)->__toString();
+    }
+
+    /**
+     * Formats the current number to a string
+     *
+     * @param  string  $thousandsSeparator
+     * @param  string  $decimalPoint
+     * @return string
+     * @throws MathException
+     * @throws RoundingNecessaryException
+     */
+    public function format(string $thousandsSeparator = ',', string $decimalPoint = '.'): string
+    {
+        return number_format($this->toFloat(), $this->scale, $decimalPoint, $thousandsSeparator);
     }
 
     /**

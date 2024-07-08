@@ -393,3 +393,33 @@ it('give the percentage of the number', function () {
     expect(Math::of(123.45)->toPercentageOf(50)->toFloat())->toBe(61.72);
     expect(Math::of(99.99)->toPercentageOf(10)->toFloat())->toBe(9.99);
 });
+
+
+it('calculates percentage difference correctly', function () {
+
+    expect(Math::of(100)->differenceInPercentage(50))->toBe(50.0);
+    expect(Math::of(50)->differenceInPercentage(100))->toBe(100.0);
+
+    expect(Math::of(100.5)->differenceInPercentage(50.1))->toBe(50.14);
+    expect(Math::of(50.1)->differenceInPercentage(100.5))->toBe(100.59);
+});
+
+test('average calculation', function () {
+    // Integers
+    expect(Math::average(2, 3, 4, 5)->toFloat())->toBe(3.5);
+    expect(Math::average(0, 100)->toFloat())->toBe(50.0);
+
+    // Floats
+    expect(Math::average(2.5, 3.5)->toFloat())->toBe(3.0);
+    expect(Math::average(3.33, 3.33)->toFloat())->toBe(3.33);
+});
+
+test('percentage of calculation', function () {
+    // Integers
+    expect(Math::of(50)->percentageOf(100))->toBe(50.00);
+    expect(Math::of(25)->percentageOf(100))->toBe(25.00);
+
+    // Floats
+    expect(Math::of(1)->percentageOf(3))->toBe(33.33);
+    expect(Math::of(2)->percentageOf(3))->toBe(66.66);
+});
