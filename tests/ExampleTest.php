@@ -5,6 +5,12 @@ use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\RoundingMode;
 use Flavorly\LaravelHelpers\Helpers\Math\Math;
 
+beforeEach(function () {
+    config()->set('helpers.math.scale', 2);
+    config()->set('helpers.math.storage_scale', 10);
+    config()->set('helpers.math.rounding_mode', RoundingMode::DOWN);
+});
+
 it('performs basic sum operations', function ($initial, $addend, $expected, $scale = null) {
     $math = Math::of($initial, $scale);
     $result = $math->sum($addend)->toFloat();
@@ -420,4 +426,24 @@ test('percentage of calculation', function () {
     // Floats
     expect(Math::of(1)->percentageOf(3))->toBe(33.33);
     expect(Math::of(2)->percentageOf(3))->toBe(66.66);
+});
+
+it('respects config scale and rounding mode', function () {
+    // Mock config values
+    config(['helpers.math.scale' => 4]);
+    config(['helpers.math.rounding_mode' => RoundingMode::UP]);
+
+    $math = Math::of(1.23456789);
+
+    expect($math->toFloat())->toBe(1.2346);
+    expect($math->roundingMode)->toBe(RoundingMode::UP);
+
+    // Reset config to default
+    config(['helpers.math.scale' => 2]);
+    config(['helpers.math.rounding_mode' => RoundingMode::DOWN]);
+
+    $defaultMath = Math::of(1.23456789);
+
+    expect($defaultMath->toFloat())->toBe(1.23);
+    expect($defaultMath->roundingMode)->toBe(RoundingMode::DOWN);
 });

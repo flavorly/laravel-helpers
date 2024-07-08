@@ -36,7 +36,7 @@ final class Math
          *
          * @var RoundingMode $roundingMode
          */
-        protected RoundingMode $roundingMode = RoundingMode::DOWN
+        public RoundingMode $roundingMode = RoundingMode::DOWN
     ) {
         if (! $number instanceof BigDecimal) {
             $this->number = BigDecimal::of($number);
@@ -52,11 +52,12 @@ final class Math
         ?int $storageScale = null,
         ?RoundingMode $roundingMode = null
     ): Math {
+
         return new Math(
             $number,
-            $scale ?? 2,
-            $storageScale ?? 10,
-            $roundingMode ?? RoundingMode::DOWN
+            $scale ?? config('helpers.math.scale', 10),
+            $storageScale ?? config('helpers.math.scale', 10),
+            $roundingMode ?? config('helpers.math.rounding_mode', RoundingMode::DOWN)
         );
     }
 
@@ -448,10 +449,9 @@ final class Math
      */
     public function percentageOf(float|int|string|BigDecimal $total): float
     {
-        $percentage = $this
-            ->number
-            ->dividedBy($this->toBigDecimal($total), $this->storageScale, $this->roundingMode)
-            ->multipliedBy(100);
+        $percentage = $this->number
+            ->multipliedBy(BigDecimal::of(100))
+            ->dividedBy($this->toBigDecimal($total), $this->scale, $this->roundingMode);
 
         return $percentage->toScale($this->scale, $this->roundingMode)->toFloat();
     }
@@ -477,8 +477,9 @@ final class Math
             return 100.0;
         }
 
-        $percentage = $difference->dividedBy($original->abs(), $this->storageScale, $this->roundingMode)
-            ->multipliedBy(100);
+        $percentage = $difference
+            ->multipliedBy(100)
+            ->dividedBy($original->abs(), $this->scale, $this->roundingMode);
 
         return $percentage->toScale($this->scale, $this->roundingMode)->toFloat();
     }
