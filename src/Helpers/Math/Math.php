@@ -434,6 +434,27 @@ final class Math
     }
 
     /**
+     * Calculates the specified percentage of the current number.
+     *
+     * @param  float|int|string  $percentage
+     * @return Math
+     * @throws DivisionByZeroException
+     * @throws MathException
+     * @throws NumberFormatException
+     */
+    public function toPercentageOf(float|int|string $percentage): Math
+    {
+        $percentageValue = $this->toBigDecimal($percentage)->dividedBy(100, $this->scale, $this->roundingMode);
+
+        return self::of(
+            $this->number->multipliedBy($percentageValue),
+            $this->scale,
+            $this->storageScale,
+            $this->roundingMode
+        );
+    }
+
+    /**
      * Checks if the current number is equal to another value
      *
      * @param  float|int|string  $value

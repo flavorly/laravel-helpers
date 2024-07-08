@@ -386,3 +386,10 @@ it('can convert to storage scale', function () {
     expect($decode_value)->toBe(100.12)
         ->and($storage_value)->toBe(1001200000000);
 });
+
+it('give the percentage of the number', function () {
+    expect(Math::of(100)->toPercentageOf(50)->toFloat())->toBe(50.0);
+    expect(Math::of(100)->toPercentageOf(30)->toFloat())->toBe(30.0);
+    expect(Math::of(123.45)->toPercentageOf(50)->toFloat())->toBe(61.72);
+    expect(Math::of(99.99)->toPercentageOf(10)->toFloat())->toBe(9.99);
+});
