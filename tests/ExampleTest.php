@@ -377,3 +377,12 @@ it('handles operations with mixed scales correctly', function () {
     $result = $num1->sum($num2);
     expect($result->toString())->toBe('124.245'); // Expecting concatenated scale 4
 });
+
+it('can convert to storage scale', function () {
+    $storage_scale = 10;
+    $storage_value = Math::of(100.123456)->storageScale($storage_scale)->toStorageScale();
+    $decode_value = Math::of($storage_value)->storageScale($storage_scale)->fromStorage()->toFloat();
+
+    expect($decode_value)->toBe(100.12)
+        ->and($storage_value)->toBe(1001200000000);
+});
