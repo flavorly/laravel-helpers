@@ -14,6 +14,7 @@ class MockResponse extends BaseMockResponse
      *
      * @param  array<string, mixed>  $placeholders
      * @param  Closure(array<string, mixed>|mixed):array<string, mixed>|null  $transform
+     *
      * @throws FixtureMissingException
      */
     public static function fixturesWithPlaceholders(
