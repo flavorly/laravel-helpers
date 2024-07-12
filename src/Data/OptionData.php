@@ -18,6 +18,5 @@ class OptionData extends Data
         public Optional|null|string $groupIcon = null,
         /** @var Collection<int,OptionData>|null */
         public Optional|Collection|null $items = null,
-    ) {
-    }
+    ) {}
 }
