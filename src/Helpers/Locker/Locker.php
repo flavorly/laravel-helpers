@@ -43,7 +43,7 @@ class Locker
     {
         $id = $this->id ?? $this->getIdFromModel();
 
-        return $this->idPrefix ? $this->idPrefix.'_'.$id : '';
+        return sprintf('%s%s',$this->idPrefix, $id);
     }
 
     /**
