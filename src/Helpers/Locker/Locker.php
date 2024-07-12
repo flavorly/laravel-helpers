@@ -23,17 +23,33 @@ class Locker
         protected bool $executedIfAlreadyLocked = false,
         protected int $lockFor = 10,
         protected int $waitForLock = 3,
-        protected ?string $owner = null
+        protected ?string $owner = null,
+        protected ?string $id = null,
+        protected string $idPrefix = '',
     ) {
         if (config('cache.default') !== 'redis') {
             throw new Exception('Cache driver must be redis');
         }
+
+        if ($id == null) {
+            $this->id = $this->getIdFromModel();
+        }
+    }
+
+    /**
+     * Get the ID of the lock
+     */
+    public function getId(): string
+    {
+        $id = $this->id ?? $this->getIdFromModel();
+
+        return $this->idPrefix ? $this->idPrefix.'_'.$id : '';
     }
 
     /**
      * Get the ID of the lock.
      */
-    public function getId(): string
+    public function getIdFromModel(): string
     {
         // locks_App\Models\User_1
         $key = $this->model->getKeyName();
@@ -44,6 +60,30 @@ class Locker
             strtolower($this->getModelName()),
             $this->model->{$key}
         ));
+    }
+
+    /**
+     * Set the ID of the lock to the given value
+     *
+     * @return $this
+     */
+    public function id(string $id): Locker
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Set a prefix to the id, useful for multi tenancy or testing
+     *
+     * @return $this
+     */
+    public function prefix(string $prefix): Locker
+    {
+        $this->idPrefix = $prefix;
+
+        return $this;
     }
 
     /**

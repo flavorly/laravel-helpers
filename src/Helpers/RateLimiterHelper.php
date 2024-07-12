@@ -29,7 +29,8 @@ final class RateLimiterHelper
         protected string $key,
         protected string $by,
         protected bool $hashed = true
-    ) {}
+    ) {
+    }
 
     /**
      * Forwards the call to the RateLimiter instance.
