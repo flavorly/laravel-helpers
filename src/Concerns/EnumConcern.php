@@ -25,6 +25,37 @@ trait EnumConcern
     }
 
     /**
+     * Check if the current enum value is not equal to the given value.
+     *
+     * @param  static  ...$others
+     */
+    public function notEquals(self ...$others): bool
+    {
+        return ! $this->equals(...$others);
+    }
+
+    /**
+     * Choose your pill, red or blue
+     * @param  EnumConcern  ...$others
+     * @return bool
+     */
+    public function is(self ...$others): bool
+    {
+        return $this->equals(...$others);
+    }
+
+
+    /**
+     * Choose your pill, red or blue
+     * @param  EnumConcern  ...$others
+     * @return bool
+     */
+    public function isNot(self ...$others): bool
+    {
+        return ! $this->equals(...$others);
+    }
+
+    /**
      * Get the label translated
      * if the enum has a getLabels method it will use that instead
      */
