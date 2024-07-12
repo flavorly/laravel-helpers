@@ -36,19 +36,18 @@ trait EnumConcern
 
     /**
      * Choose your pill, red or blue
+     *
      * @param  EnumConcern  ...$others
-     * @return bool
      */
     public function is(self ...$others): bool
     {
         return $this->equals(...$others);
     }
 
-
     /**
      * Choose your pill, red or blue
+     *
      * @param  EnumConcern  ...$others
-     * @return bool
      */
     public function isNot(self ...$others): bool
     {
