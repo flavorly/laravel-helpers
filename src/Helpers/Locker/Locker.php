@@ -115,6 +115,16 @@ class Locker
     }
 
     /**
+     * Get the prefix
+     *
+     * @return string
+     */
+    public function getPrefix(): string
+    {
+        return $this->idPrefix;
+    }
+
+    /**
      * Locks a resource, if a closure is given the lock is released after the closure is executed
      */
     public function lock(?Closure $closure = null): bool|string
