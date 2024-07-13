@@ -116,8 +116,6 @@ class Locker
 
     /**
      * Get the prefix
-     *
-     * @return string
      */
     public function getPrefix(): string
     {
