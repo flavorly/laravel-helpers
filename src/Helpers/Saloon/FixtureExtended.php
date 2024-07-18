@@ -68,7 +68,7 @@ class FixtureExtended extends Fixture
         $fixturePath = $this->getFixturePath();
 
         if ($storage->exists($fixturePath)) {
-            $recordedResponse = RecordedResponse::fromFile((string)$storage->get($fixturePath));
+            $recordedResponse = RecordedResponse::fromFile((string) $storage->get($fixturePath));
 
             // Replace the data
             $mockResponse = $recordedResponse->toMockResponse();
