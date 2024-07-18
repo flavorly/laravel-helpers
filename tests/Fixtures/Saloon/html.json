@@ -1,0 +1,6 @@
+{
+  "statusCode": 200,
+  "headers": [],
+  "encoding": "UTF-8",
+  "data": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>TEST_HEAD<\/head>\n<body>{{TEST_BODY}}<\/body>\n<\/html>\n"
+}

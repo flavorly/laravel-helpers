@@ -19,5 +19,7 @@ class LaravelHelpersServiceProvider extends PackageServiceProvider
         // Booting the package
     }
 
-    public function registeringPackage(): void {}
+    public function registeringPackage(): void
+    {
+    }
 }
