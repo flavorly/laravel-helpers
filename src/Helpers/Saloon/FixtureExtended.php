@@ -38,6 +38,17 @@ class FixtureExtended extends Fixture
     }
 
     /**
+     * Replace multiple paths in the body response
+     * @param  array<string,mixed>  $paths
+     */
+    public function replacePaths(array $paths): static
+    {
+        $this->pathPlaceholders = array_merge($this->pathPlaceholders, $paths);
+
+        return $this;
+    }
+
+    /**
      * Replace a string in the body response
      */
     public function replaceString(string $key, mixed $value): static
@@ -48,11 +59,22 @@ class FixtureExtended extends Fixture
     }
 
     /**
+     * Replace multiple strings in the body response
+     * @param array<string,mixed>  $strings
+     */
+    public function replaceStrings(array $strings = []): static
+    {
+        $this->textPlaceholders = array_merge($this->textPlaceholders, $strings);
+
+        return $this;
+    }
+
+    /**
      * Transform the resulting text body
      *
      * @param  Closure(string):string  $transform
      */
-    public function transform(\Closure $transform): static
+    public function transform(Closure $transform): static
     {
         $this->transformers[] = $transform;
 
