@@ -19,6 +19,6 @@ return [
         'replace' => [
             'Flavorly.InertiaFlash.' => '',
             'Flavorly.LaravelHelpers.' => '',
-        ]
-    ]
+        ],
+    ],
 ];
