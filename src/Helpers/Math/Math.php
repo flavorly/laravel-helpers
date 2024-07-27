@@ -56,11 +56,11 @@ final class Math
         return new Math(
             $number,
             // @phpstan-ignore-next-line
-            $scale ?? (int) config('helpers.math.scale', 10),
+            $scale ?? (int) config('laravel-helpers.math.scale', 10),
             // @phpstan-ignore-next-line
-            $storageScale ?? (int) config('helpers.math.scale', 10),
+            $storageScale ?? (int) config('laravel-helpers.math.scale', 10),
             // @phpstan-ignore-next-line
-            $roundingMode ?? config('helpers.math.rounding_mode', RoundingMode::DOWN)
+            $roundingMode ?? config('laravel-helpers.math.rounding_mode', RoundingMode::DOWN)
         );
     }
 

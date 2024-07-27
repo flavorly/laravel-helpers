@@ -14,4 +14,11 @@ return [
         'storage_scale' => 10,
         'rounding_mode' => \Brick\Math\RoundingMode::DOWN,
     ],
+
+    'typescript' => [
+        'replace' => [
+            'Flavorly.InertiaFlash.' => '',
+            'Flavorly.LaravelHelpers.' => '',
+        ]
+    ]
 ];

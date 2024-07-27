@@ -6,9 +6,9 @@ use Brick\Math\RoundingMode;
 use Flavorly\LaravelHelpers\Helpers\Math\Math;
 
 beforeEach(function () {
-    config()->set('helpers.math.scale', 2);
-    config()->set('helpers.math.storage_scale', 10);
-    config()->set('helpers.math.rounding_mode', RoundingMode::DOWN);
+    config()->set('laravel-helpers.math.scale', 2);
+    config()->set('laravel-helpers.math.storage_scale', 10);
+    config()->set('laravel-helpers.math.rounding_mode', RoundingMode::DOWN);
 });
 
 it('performs basic sum operations', function ($initial, $addend, $expected, $scale = null) {
@@ -430,8 +430,8 @@ test('percentage of calculation', function () {
 
 it('respects config scale and rounding mode', function () {
     // Mock config values
-    config(['helpers.math.scale' => 4]);
-    config(['helpers.math.rounding_mode' => RoundingMode::UP]);
+    config(['laravel-helpers.math.scale' => 4]);
+    config(['laravel-helpers.math.rounding_mode' => RoundingMode::UP]);
 
     $math = Math::of(1.23456789);
 
@@ -439,8 +439,8 @@ it('respects config scale and rounding mode', function () {
     expect($math->roundingMode)->toBe(RoundingMode::UP);
 
     // Reset config to default
-    config(['helpers.math.scale' => 2]);
-    config(['helpers.math.rounding_mode' => RoundingMode::DOWN]);
+    config(['laravel-helpers.math.scale' => 2]);
+    config(['laravel-helpers.math.rounding_mode' => RoundingMode::DOWN]);
 
     $defaultMath = Math::of(1.23456789);
 

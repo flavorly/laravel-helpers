@@ -10,12 +10,14 @@ class TypeDefinitionWriter extends BaseWriter
 {
     public function format(TypesCollection $collection): string
     {
+        $replacements = config('laravel-helpers.typescript.replace', []);
+
         return Str::of(parent::format($collection))
             ->replaceMatches('/(\w+)\??: ([\w\.<>]+) \| null;/', function ($matches) {
                 return sprintf('%s?: %s', $matches[1], $matches[2]);
             })
-            ->replace(search: 'Flavorly.InertiaFlash.', replace: '')
-            ->replace(search: 'Flavorly.LaravelHelpers.', replace: '')
+            // @phpstan-ignore-next-line
+            ->replace(search: array_keys($replacements), replace: array_values($replacements))
             ->replace(search: 'App.Data', replace: 'Data')
             ->replace(search: 'App.Enums', replace: 'Enums')
             ->replace(search: 'App.Http.Requests', replace: 'Requests')

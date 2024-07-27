@@ -10,8 +10,8 @@ class LaravelHelpersServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('laravel-helpers')
-            ->hasConfigFile();
+            ->name('helpers')
+            ->hasConfigFile('laravel-helpers');
     }
 
     public function bootingPackage(): void
