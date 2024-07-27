@@ -39,6 +39,7 @@ class FixtureExtended extends Fixture
 
     /**
      * Replace multiple paths in the body response
+     *
      * @param  array<string,mixed>  $paths
      */
     public function replacePaths(array $paths): static
@@ -60,7 +61,8 @@ class FixtureExtended extends Fixture
 
     /**
      * Replace multiple strings in the body response
-     * @param array<string,mixed>  $strings
+     *
+     * @param  array<string,mixed>  $strings
      */
     public function replaceStrings(array $strings = []): static
     {
