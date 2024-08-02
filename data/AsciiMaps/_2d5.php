@@ -1,1 +1,3 @@
-<?php return explode('	', '																																																																						Suo																																																																																																																																																											Ke');
+<?php
+
+return explode('	', '																																																																						Suo																																																																																																																																																											Ke');

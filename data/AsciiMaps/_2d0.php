@@ -1,1 +1,3 @@
-<?php return explode('	', '																						Li');
+<?php
+
+return explode('	', '																						Li');

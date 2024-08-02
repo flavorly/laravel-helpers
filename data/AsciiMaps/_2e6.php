@@ -1,1 +1,3 @@
-<?php return explode('	', '																																																																										Jan	Duk																																																																																																																																												Tek');
+<?php
+
+return explode('	', '																																																																										Jan	Duk																																																																																																																																												Tek');

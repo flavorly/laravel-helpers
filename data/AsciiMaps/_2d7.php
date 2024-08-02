@@ -1,1 +1,3 @@
-<?php return explode('	', '																																																																											Ling																																Khan																									Oi');
+<?php
+
+return explode('	', '																																																																											Ling																																Khan																									Oi');

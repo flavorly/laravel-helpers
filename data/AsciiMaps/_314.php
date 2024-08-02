@@ -1,1 +1,3 @@
-<?php return explode('	', '																																																																																																																																																																								Ji										Go																																																										Ceoi');
+<?php
+
+return explode('	', '																																																																																																																																																																								Ji										Go																																																										Ceoi');

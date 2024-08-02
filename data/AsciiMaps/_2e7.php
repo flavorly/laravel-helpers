@@ -1,1 +1,3 @@
-<?php return explode('	', '																																																						Dou																																																														Gu	Ji		Fan	Ceon	Waan	Got');
+<?php
+
+return explode('	', '																																																						Dou																																																														Gu	Ji		Fan	Ceon	Waan	Got');

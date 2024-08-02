@@ -1,1 +1,3 @@
-<?php return explode('	', '														Lei																																		Jyu																																																																																																																																																											Tong');
+<?php
+
+return explode('	', '														Lei																																		Jyu																																																																																																																																																											Tong');

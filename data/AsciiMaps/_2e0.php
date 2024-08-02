@@ -1,1 +1,3 @@
-<?php return explode('	', '																																				Lou						Gun								Geng');
+<?php
+
+return explode('	', '																																				Lou						Gun								Geng');

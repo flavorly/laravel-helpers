@@ -3,7 +3,7 @@
 use Flavorly\LaravelHelpers\Helpers\AsciiTransliteration\AsciiTransliteration;
 
 it('transliterates strings correctly', function ($input, $expected) {
-    expect((new AsciiTransliteration())->transliterate($input))->toBe($expected);
+    expect((new AsciiTransliteration)->transliterate($input))->toBe($expected);
 })->with([
     ['', ''],
     ["\x00\x01\t\n\x1f ~\x7f", "\x00\x01\t\n\x1f ~\x7f"],

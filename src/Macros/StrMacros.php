@@ -149,10 +149,10 @@ final class StrMacros implements RegistersMacros
         Str::macro('normalize', macro: function (string $string, bool $emojis = false): string {
             if (! $emojis) {
                 // @phpstan-ignore-next-line
-                return (new AsciiTransliteration())->transliterate(Str::trimEmojis($string));
+                return (new AsciiTransliteration)->transliterate(Str::trimEmojis($string));
             }
 
-            return (new AsciiTransliteration())->transliterate($string);
+            return (new AsciiTransliteration)->transliterate($string);
         });
     }
 

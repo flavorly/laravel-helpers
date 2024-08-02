@@ -1,1 +1,3 @@
-<?php return explode('	', '											Cha																																																																																																																																																																																																																																															Du');
+<?php
+
+return explode('	', '											Cha																																																																																																																																																																																																																																															Du');
