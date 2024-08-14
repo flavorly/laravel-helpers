@@ -1,1 +1,3 @@
-<?php return explode('	', '														Qiao																																																																																																																																															Duo																																																	Jian															Ji');
+<?php
+
+return explode('	', '														Qiao																																																																																																																																															Duo																																																	Jian															Ji');

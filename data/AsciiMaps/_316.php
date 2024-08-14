@@ -1,1 +1,3 @@
-<?php return explode('	', '																																																																																																																							Me');
+<?php
+
+return explode('	', '																																																																																																																							Me');

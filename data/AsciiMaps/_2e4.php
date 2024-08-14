@@ -1,1 +1,3 @@
-<?php return explode('	', '																										Faan														Jing');
+<?php
+
+return explode('	', '																										Faan														Jing');

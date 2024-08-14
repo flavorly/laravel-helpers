@@ -1,1 +1,3 @@
-<?php return explode('	', '																																																																																																																																																																																																																																													Mit																Wo');
+<?php
+
+return explode('	', '																																																																																																																																																																																																																																													Mit																Wo');

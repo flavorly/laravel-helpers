@@ -1,1 +1,3 @@
-<?php return explode('	', 'ga	ta	ghu	bu	shi	le	kwe	mi	le');
+<?php
+
+return explode('	', 'ga	ta	ghu	bu	shi	le	kwe	mi	le');

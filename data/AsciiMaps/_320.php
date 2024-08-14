@@ -1,1 +1,3 @@
-<?php return explode('	', '			Bang																																																																																	Lai');
+<?php
+
+return explode('	', '			Bang																																																																																	Lai');
