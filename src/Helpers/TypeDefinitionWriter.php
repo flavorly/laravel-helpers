@@ -13,8 +13,11 @@ class TypeDefinitionWriter extends BaseWriter
         $replacements = config('laravel-helpers.typescript.replace', []);
 
         return Str::of(parent::format($collection))
-            ->replaceMatches('/(\w+)\??: ([\w\.<>]+) \| null;/', function ($matches) {
-                return sprintf('%s?: %s', $matches[1], $matches[2]);
+            ->replaceMatches('/(\w+)(\??:)\s*([\w\s\[\]:<>,{}\.]+)(\s*\|\s*null)?;/', function ($matches) {
+                $name = $matches[1];
+                $type = $matches[3];
+                $isOptional = $matches[2] === '?:' || isset($matches[4]);
+                return sprintf('%s%s %s', $name, $isOptional ? '?:' : ':', trim($type));
             })
             // @phpstan-ignore-next-line
             ->replace(search: array_keys($replacements), replace: array_values($replacements))
