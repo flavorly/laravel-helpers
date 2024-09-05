@@ -17,6 +17,7 @@ class TypeDefinitionWriter extends BaseWriter
                 $name = $matches[1];
                 $type = $matches[3];
                 $isOptional = $matches[2] === '?:' || isset($matches[4]);
+
                 return sprintf('%s%s %s', $name, $isOptional ? '?:' : ':', trim($type));
             })
             // @phpstan-ignore-next-line

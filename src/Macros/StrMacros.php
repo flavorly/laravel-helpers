@@ -23,6 +23,9 @@ final class StrMacros implements RegistersMacros
         self::spin();
         self::normalize();
         self::trimEmojis();
+        self::prefix();
+        self::split();
+        self::extractors();
     }
 
     public static function username(): void
@@ -153,6 +156,97 @@ final class StrMacros implements RegistersMacros
             }
 
             return (new AsciiTransliteration)->transliterate($string);
+        });
+    }
+
+    /**
+     * Normalize non-ascii characters
+     */
+    public static function split(): void
+    {
+        Str::macro('split', function (array|string $value, string $delimiter = ','): Collection {
+            $array = is_array($value)
+                ? $value
+                // @phpstan-ignore-next-line
+                : explode($delimiter, $value);
+
+            return Collection::make($array)
+                ->map(fn ($item) => trim($item))
+                ->map(function ($item) {
+                    if (is_numeric($item)) {
+                        return str_contains($item, '.') ? (float) $item : (int) $item;
+                    }
+
+                    return $item;
+                })
+                ->unique()
+                ->values();
+        });
+    }
+
+    public static function extractors(): void
+    {
+        /**
+         * @return \Illuminate\Support\Collection<string>
+         */
+        Str::macro('extractStrings', function (string|array $value, string $delimiter = ','): Collection {
+            return Collection::wrap($value)
+                ->flatMap(fn (string $v): array => explode($delimiter, $v))
+                ->map(fn (string $v): string => trim($v))
+                ->filter(fn (string $v): bool => ! is_numeric($v) && ! in_array(strtolower($v), ['true', 'false'], true))
+                ->unique()
+                ->values();
+        });
+
+        /**
+         * @return \Illuminate\Support\Collection<int>
+         */
+        Str::macro('extractIntegers', function (string|array $value, string $delimiter = ','): Collection {
+            return Collection::wrap($value)
+                ->flatMap(fn (string $v): array => explode($delimiter, $v))
+                ->map(fn (string $v): string => trim($v))
+                ->filter(fn (string $v): bool => ctype_digit($v))
+                ->map(fn (string $v): int => (int) $v)
+                ->unique()
+                ->values();
+        });
+
+        /**
+         * @return \Illuminate\Support\Collection<float>
+         */
+        Str::macro('extractFloats', function (string|array $value, string $delimiter = ','): Collection {
+            return Collection::wrap($value)
+                ->flatMap(fn (string $v): array => explode($delimiter, $v))
+                ->map(fn (string $v): string => trim($v))
+                ->filter(fn (string $v): bool => is_numeric($v) && strpos($v, '.') !== false)
+                ->map(fn (string $v): float => (float) $v)
+                ->unique()
+                ->values();
+        });
+
+        /**
+         * @return \Illuminate\Support\Collection<bool>
+         */
+        Str::macro('extractBooleans', function (string|array $value, string $delimiter = ','): Collection {
+            return Collection::wrap($value)
+                ->flatMap(fn (string $v): array => explode($delimiter, $v))
+                ->map(fn (string $v): string => trim($v))
+                ->filter(fn (string $v): bool => in_array(strtolower($v), ['true', 'false'], true))
+                ->map(fn (string $v): bool => strtolower($v) === 'true')
+                ->unique()
+                ->values();
+        });
+    }
+
+    /**
+     * Prefix an array of strings with some value
+     */
+    public static function prefix(): void
+    {
+        Str::macro('prefix', function (array $items, ?string $prefix = null) {
+            return $prefix
+                ? collect($items)->map(fn ($item) => "$prefix.$item")->toArray()
+                : $items;
         });
     }
 
