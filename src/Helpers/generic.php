@@ -37,10 +37,7 @@ if (! function_exists('data_get_fallback')) {
     /**
      * Get an item from an array or object using dot notation with multiple fallback keys.
      *
-     * @param  array  $target
      * @param  array<int, string>  $keys
-     * @param  mixed|null  $default
-     * @return mixed
      */
     function data_get_fallback(array $target, array $keys, mixed $default = null): mixed
     {
