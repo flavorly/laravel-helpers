@@ -191,6 +191,7 @@ final class StrMacros implements RegistersMacros
          */
         Str::macro('extractStrings', function (string|array $value, string $delimiter = ','): Collection {
             return Collection::wrap($value)
+                // @phpstan-ignore-next-line
                 ->flatMap(fn (string $v): array => explode($delimiter, $v))
                 ->map(fn (string $v): string => trim($v))
                 ->filter(fn (string $v): bool => ! is_numeric($v) && ! in_array(strtolower($v), ['true', 'false'], true))
@@ -203,6 +204,7 @@ final class StrMacros implements RegistersMacros
          */
         Str::macro('extractIntegers', function (string|array $value, string $delimiter = ','): Collection {
             return Collection::wrap($value)
+                // @phpstan-ignore-next-line
                 ->flatMap(fn (string $v): array => explode($delimiter, $v))
                 ->map(fn (string $v): string => trim($v))
                 ->filter(fn (string $v): bool => ctype_digit($v))
@@ -216,6 +218,7 @@ final class StrMacros implements RegistersMacros
          */
         Str::macro('extractFloats', function (string|array $value, string $delimiter = ','): Collection {
             return Collection::wrap($value)
+                // @phpstan-ignore-next-line
                 ->flatMap(fn (string $v): array => explode($delimiter, $v))
                 ->map(fn (string $v): string => trim($v))
                 ->filter(fn (string $v): bool => is_numeric($v) && strpos($v, '.') !== false)
@@ -229,6 +232,7 @@ final class StrMacros implements RegistersMacros
          */
         Str::macro('extractBooleans', function (string|array $value, string $delimiter = ','): Collection {
             return Collection::wrap($value)
+                // @phpstan-ignore-next-line
                 ->flatMap(fn (string $v): array => explode($delimiter, $v))
                 ->map(fn (string $v): string => trim($v))
                 ->filter(fn (string $v): bool => in_array(strtolower($v), ['true', 'false'], true))

@@ -2,6 +2,7 @@
 
 use Flavorly\LaravelHelpers\Helpers\Saloon\FixtureExtended;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\UploadedFile;
 
 if (! function_exists('tokenize')) {
     /**
@@ -37,7 +38,8 @@ if (! function_exists('data_get_fallback')) {
     /**
      * Get an item from an array or object using dot notation with multiple fallback keys.
      *
-     * @param  array<int, string>  $keys
+     * @param  array<int|string,mixed>  $target
+     * @param  array<int,string>  $keys
      */
     function data_get_fallback(array $target, array $keys, mixed $default = null): mixed
     {
@@ -50,5 +52,19 @@ if (! function_exists('data_get_fallback')) {
 
         return $default;
     }
+}
 
+if (! function_exists('url_to_upload_file')) {
+    /**
+     * Takes an external URL and transforms it into a UploadedFile.
+     */
+    function url_to_upload_file(string $url): UploadedFile
+    {
+        $info = pathinfo($url);
+        $contents = file_get_contents($url);
+        $file = '/tmp/'.$info['basename'];
+        file_put_contents($file, $contents);
+
+        return new UploadedFile($file, $info['basename']);
+    }
 }
