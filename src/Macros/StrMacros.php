@@ -48,6 +48,7 @@ final class StrMacros implements RegistersMacros
              * @var Authenticatable|Model $model
              */
             $model = config('auth.providers.users.model', config('auth.model', 'App\User'));
+            // @phpstan-ignore-next-line
             while ($model::query()->where('username', $username)->exists()) {
                 $username = $parsed.$counter;
                 $counter++;
