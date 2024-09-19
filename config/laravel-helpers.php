@@ -30,5 +30,5 @@ return [
     | When enabled, all requests and responses will be logged to ray
     |
     */
-    'debug-requests' => false,
+    'debug-requests' => true,
 ];
