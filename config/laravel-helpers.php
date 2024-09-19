@@ -21,4 +21,14 @@ return [
             'Flavorly.LaravelHelpers.' => '',
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Debug Saloon Requests / Responses
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, all requests and responses will be logged to ray
+    |
+    */
+    'debug-requests' => false,
 ];
