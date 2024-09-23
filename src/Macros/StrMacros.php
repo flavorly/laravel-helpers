@@ -40,17 +40,17 @@ final class StrMacros implements RegistersMacros
                 return $string;
             }
 
-            $parsed = Str::slug($string);
+            $parsed = Str::slug($parsed);
 
             $counter = 1;
             $username = $parsed;
             /**
              * @var Authenticatable|Model $model
              */
-            $model = config('auth.providers.users.model', config('auth.model', 'App\User'));
+            $model = config('auth.providers.users.model', config('auth.model', 'App\Models\User'));
             // @phpstan-ignore-next-line
             while ($model::query()->where('username', $username)->exists()) {
-                $username = $parsed.$counter;
+                $username = $parsed.($counter > 1 ? $counter : '');
                 $counter++;
             }
 

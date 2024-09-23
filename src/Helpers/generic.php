@@ -1,8 +1,13 @@
 <?php
 
+use Brick\Math\BigDecimal;
+use Flavorly\LaravelHelpers\Helpers\Math\Math;
 use Flavorly\LaravelHelpers\Helpers\Saloon\FixtureExtended;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 if (! function_exists('tokenize')) {
     /**
@@ -60,11 +65,36 @@ if (! function_exists('url_to_upload_file')) {
      */
     function url_to_upload_file(string $url): UploadedFile
     {
-        $info = pathinfo($url);
-        $contents = file_get_contents($url);
-        $file = '/tmp/'.$info['basename'];
-        file_put_contents($file, $contents);
+        $cleanUrl = strtok($url, '?');
+        // @phpstan-ignore-next-line
+        $filename = basename($cleanUrl);
+        $path = tempnam(sys_get_temp_dir(), Str::uuid());
 
-        return new UploadedFile($file, $info['basename']);
+        Http::withUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36')
+            ->withHeaders([
+                'sec-ch-ua-platform' => '"macOS"',
+                'sec-ch-ua-mobile' => '?0',
+                'sec-ch-ua' => '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
+            ])
+            ->throw(fn () => throw new Exception('Could not download file'))
+            ->sink($path)
+            ->get($url);
+
+        return new UploadedFile($path, $filename);
+    }
+}
+
+if (! function_exists('math')) {
+
+    /**
+     * Helper to quickly create a math object based on the project config.
+     */
+    function math(float|int|string|BigDecimal $number): Math
+    {
+        return Math::of(
+            $number,
+            Config::integer('app.decimal_scale', Config::integer('laravel-helpers.math.decimal_scale', 10)),
+            Config::integer('app.decimal_integer', Config::integer('laravel-helpers.math.decimal_integer', 10)),
+        );
     }
 }

@@ -11,7 +11,10 @@ class LaravelHelpersServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('helpers')
-            ->hasConfigFile('laravel-helpers');
+            ->hasConfigFile('laravel-helpers')
+            ->hasCommands([
+                Commands\HorizonWipeCommand::class,
+            ]);
     }
 
     public function bootingPackage(): void
