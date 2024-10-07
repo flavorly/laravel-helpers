@@ -13,6 +13,7 @@ parameters:
         - tests/*/Feature/*
         - tests/*/Unit/*
         - tests/*/Datasets/*
+        - src/Helpers/LaravelData
     checkOctaneCompatibility: true
     checkModelProperties: true
     treatPhpDocTypesAsCertain: false

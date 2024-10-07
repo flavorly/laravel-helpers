@@ -1,6 +1,6 @@
 <?php
 
-namespace Flavorly\LaravelHelpers\Helpers;
+namespace Flavorly\LaravelHelpers\Helpers\LaravelData;
 
 use Illuminate\Support\Str;
 use Spatie\TypeScriptTransformer\Structures\TypesCollection;
