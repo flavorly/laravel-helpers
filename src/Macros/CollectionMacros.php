@@ -12,6 +12,7 @@ class CollectionMacros implements RegistersMacros
     public static function register(): void
     {
         self::paginate();
+        self::orderByIds();
     }
 
     public static function paginate(): void
@@ -48,6 +49,27 @@ class CollectionMacros implements RegistersMacros
                         'query' => request()->query(),
                     ]
                 );
+            });
+        }
+    }
+
+    public static function orderByIds(): void
+    {
+        if (! Collection::hasMacro('orderByIds')) {
+            /**
+             * Order the collection by the given ids.
+             *
+             * @param  array|Collection  $ids
+             * @param  string  $idField
+             * @return \Illuminate\Support\Collection
+             */
+            Collection::macro('orderByIds', function ($ids, string $idField = 'id'): Collection {
+                $flippedIds = array_flip($ids instanceof Collection ? $ids->all() : $ids);
+
+                /**
+                 * @var Collection<int, mixed> $this
+                 */
+                return $this->sortBy(fn ($item) => $flippedIds[$item->{$idField}] ?? PHP_INT_MAX)->values();
             });
         }
     }
