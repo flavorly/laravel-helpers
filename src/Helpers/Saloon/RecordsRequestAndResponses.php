@@ -3,10 +3,10 @@
 namespace Flavorly\LaravelHelpers\Helpers\Saloon;
 
 use GuzzleHttp\TransferStats;
-use Saloon\Http\Response;
-use Saloon\Http\PendingRequest;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Saloon\Http\PendingRequest;
+use Saloon\Http\Response;
 
 trait RecordsRequestAndResponses
 {
