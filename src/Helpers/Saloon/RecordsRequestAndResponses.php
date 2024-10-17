@@ -4,8 +4,8 @@ namespace Flavorly\LaravelHelpers\Helpers\Saloon;
 
 use GuzzleHttp\TransferStats;
 use Saloon\Config;
-use Saloon\Http\Response;
 use Saloon\Http\PendingRequest;
+use Saloon\Http\Response;
 
 class RecordsRequestAndResponses
 {
