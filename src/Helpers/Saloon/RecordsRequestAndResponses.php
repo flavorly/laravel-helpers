@@ -3,24 +3,33 @@
 namespace Flavorly\LaravelHelpers\Helpers\Saloon;
 
 use GuzzleHttp\TransferStats;
+use Saloon\Http\Response;
 use Saloon\Http\PendingRequest;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 trait RecordsRequestAndResponses
 {
     /**
      * Little debug help to see the request and response pairs to Ray
+     *
+     * Usage: call this method in your Connector __construct, so it's only registered once
      */
-    public function bootRecordsRequestAndResponses(PendingRequest $pendingRequest): void
+    public function debugRequestsAndResponses(): void
     {
         if (app()->hasDebugModeEnabled() && config('laravel-helpers.debug-requests', true)) {
-            $this->middleware()->onRequest(new RequestRecorder);
-            $this->middleware()->onResponse(new ResponseRecorder);
+            $this->debugRequest(function (PendingRequest $pendingRequest, RequestInterface $psrRequest) {
+                ray('Dispatching Request', $pendingRequest);
+            });
+
+            $this->debugResponse(function (Response $response, ResponseInterface $psrResponse) {
+                ray('Response Received', $response);
+            });
+
             $this->config()->set([
                 'on_stats' => function (TransferStats $stats) {
                     // @codeCoverageIgnoreStart
-                    ray('[Guzzle Request ]', $stats->getRequest());
-                    ray('[Guzzle Response ]', $stats->getResponse());
-                    ray('[Guzzle Response Body ]', (string) $stats->getResponse()?->getBody());
+                    ray('[Guzzle Response Body]', (string) $stats->getResponse()?->getBody());
                     // @codeCoverageIgnoreEnd
                 },
             ]);
