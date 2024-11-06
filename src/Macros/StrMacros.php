@@ -382,14 +382,16 @@ final class StrMacros implements RegistersMacros
     public static function linesToCollection(): void
     {
         Str::macro('lines_to_collection', function (
-            string|array $value,
-            string $delimiter = ',',
+            string|array|null $value,
             bool $unique = true
         ): Collection {
+            if (is_null($value)) {
+                return collect();
+            }
             // Handle array input
             $items = is_array($value)
                 ? $value
-                : explode($delimiter, $value);
+                : preg_split('/\r\n|\r|\n|\\\\n|\\\\r\\\\n|\\\\r|\x{2028}|\x{2029}|\x{0085}|\v|\f/u', $value);
 
             // Create collection and process items
             return Collection::make($items)
