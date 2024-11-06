@@ -69,4 +69,4 @@ class StrTest extends TestCase
         $result = Str::linesToCollection('café,résumé,naïve');
         $this->assertEquals(['café', 'résumé', 'naïve'], $result->all());
     }
-} 
+}
