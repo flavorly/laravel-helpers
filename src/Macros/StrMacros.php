@@ -26,6 +26,7 @@ final class StrMacros implements RegistersMacros
         self::prefix();
         self::split();
         self::extractors();
+        self::linesToCollection();
     }
 
     public static function username(): void
@@ -372,6 +373,43 @@ final class StrMacros implements RegistersMacros
             ];
 
             return strtr($string, $chars);
+        });
+    }
+
+    /**
+     * Convert a delimited string to a collection of lines
+     */
+    public static function linesToCollection(): void
+    {
+        Str::macro('lines_to_collection', function (
+            string|array $value,
+            string $delimiter = ',',
+            bool $unique = true
+        ): Collection {
+            // Handle array input
+            $items = is_array($value)
+                ? $value
+                : explode($delimiter, $value);
+
+            // Create collection and process items
+            return Collection::make($items)
+                ->map(fn ($item) => trim($item))
+                ->filter()
+                ->when($unique, function (Collection $items) {
+                    // Use a temporary hash map for faster duplicate checking
+                    $seen = [];
+
+                    return $items->filter(function ($item) use (&$seen) {
+                        $hash = md5($item);
+                        if (isset($seen[$hash])) {
+                            return false;
+                        }
+                        $seen[$hash] = true;
+
+                        return true;
+                    });
+                })
+                ->values(); // Reset array keys
         });
     }
 }
