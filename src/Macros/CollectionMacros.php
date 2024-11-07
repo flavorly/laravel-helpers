@@ -3,6 +3,7 @@
 namespace Flavorly\LaravelHelpers\Macros;
 
 use Flavorly\LaravelHelpers\Contracts\RegistersMacros;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
@@ -13,6 +14,7 @@ class CollectionMacros implements RegistersMacros
     {
         self::paginate();
         self::orderByIds();
+        self::toJsonResponse();
     }
 
     public static function paginate(): void
@@ -72,5 +74,12 @@ class CollectionMacros implements RegistersMacros
                 return $this->sortBy(fn ($item) => $flippedIds[$item->{$idField}] ?? PHP_INT_MAX)->values();
             });
         }
+    }
+
+    public static function toJsonResponse(): void
+    {
+        Collection::macro('toJsonResponse', function (): JsonResponse {
+            return response()->json($this);
+        });
     }
 }
