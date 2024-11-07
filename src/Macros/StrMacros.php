@@ -397,6 +397,7 @@ final class StrMacros implements RegistersMacros
             return Collection::make($items)
                 ->map(function ($item) {
                     $item = trim($item);
+
                     // Remove trailing backslashes
                     return rtrim($item, '\\');
                 })
