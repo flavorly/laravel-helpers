@@ -55,10 +55,11 @@ class Locker
         $key = $this->model->getKeyName();
 
         return Str::snake(sprintf(
-            '%s_%s_%s',
+            '%s_%s_%s_%s',
             'locks',
             strtolower($this->getModelName()),
-            $this->model->{$key}
+            $this->model->{$key},
+            $this->model?->created_at?->timestamp ?? '-',
         ));
     }
 
@@ -233,6 +234,28 @@ class Locker
     }
 
     /**
+     * Clear all locks for the current model
+     */
+    public function clearAll(): void
+    {
+        /** @var RedisStore $store */
+        $store = Cache::store('redis');
+        /** @var \Illuminate\Redis\Connections\Connection $redis */
+        $redis = $store->lockConnection();
+
+        // Get all locks for this model - match the correct pattern
+        $pattern = sprintf('%slocks_%s*', Cache::getPrefix(), strtolower($this->getModelName()));
+        $keys = $redis->keys($pattern);
+
+        if (! empty($keys)) {
+            foreach ($keys as $key) {
+                $lock_key = str_replace([Cache::getPrefix(), 'database_'], '', $key);
+                Cache::lock($lock_key)->forceRelease();
+            }
+        }
+    }
+
+    /**
      * Get the model name formatted.
      */
     protected function getModelName(): string
@@ -244,5 +267,32 @@ class Locker
 
             return substr($result !== false ? $result : '', 1);
         }
+    }
+
+    /**
+     * Get all active locks in the system
+     *
+     * @return array<string, mixed> Array of lock information
+     */
+    public static function getAllLocks(): array
+    {
+        /** @var RedisStore $store */
+        $store = Cache::store('redis');
+        /** @var \Illuminate\Redis\Connections\Connection $redis */
+        $redis = $store->lockConnection();
+
+        // Get all locks with pattern locks_*
+        $pattern = sprintf('%s%s_*', Cache::getPrefix(), 'locks');
+        $keys = $redis->keys($pattern);
+
+        $locks = [];
+        foreach ($keys as $key) {
+            $locks[$key] = [
+                'owner' => $redis->get($key),
+                'ttl' => $redis->ttl($key),
+            ];
+        }
+
+        return $locks;
     }
 }
