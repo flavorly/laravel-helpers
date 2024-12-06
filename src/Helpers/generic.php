@@ -15,7 +15,7 @@ if (! function_exists('tokenize')) {
      */
     function tokenize(mixed ...$args): string
     {
-        return implode('_', $args);
+        return implode(':', $args);
     }
 }
 

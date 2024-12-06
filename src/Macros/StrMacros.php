@@ -393,8 +393,12 @@ final class StrMacros implements RegistersMacros
                 ? $value
                 : preg_split('/\r\n|\r|\n|\\\\n|\\\\r\\\\n|\\\\r|\x{2028}|\x{2029}|\x{0085}|\v|\f/u', $value);
 
+            if (empty($items)) {
+                return collect();
+            }
+
             // Create collection and process items
-            return Collection::make($items)
+            return collect($items)
                 ->map(function ($item) {
                     $item = trim($item);
 
@@ -402,6 +406,7 @@ final class StrMacros implements RegistersMacros
                     return rtrim($item, '\\');
                 })
                 ->filter()
+                // @phpstan-ignore-next-line
                 ->when($unique, function (Collection $items) {
                     // Use a temporary hash map for faster duplicate checking
                     $seen = [];
