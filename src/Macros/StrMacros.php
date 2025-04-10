@@ -383,7 +383,7 @@ final class StrMacros implements RegistersMacros
     {
         Str::macro('linesToCollection', function (
             string|array|null $value,
-            string|null $delimiter = null,
+            ?string $delimiter = null,
             bool $unique = true
         ): Collection {
             if (is_null($value)) {

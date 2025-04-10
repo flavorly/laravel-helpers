@@ -4,7 +4,6 @@ namespace Flavorly\LaravelHelpers\Macros;
 
 use Flavorly\LaravelHelpers\Contracts\RegistersMacros;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\ResponseFactory;
 
 class ResponseMacros implements RegistersMacros
@@ -47,5 +46,4 @@ class ResponseMacros implements RegistersMacros
             });
         }
     }
-
 }

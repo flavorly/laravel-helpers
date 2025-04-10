@@ -24,7 +24,7 @@ final class HorizonWipeCommand extends Command
 
         Redis::connection()->del('horizon:failed:*');
         Redis::connection()->del('horizon:failed_jobs');
-        //@phpstan-ignore-next-line
+        // @phpstan-ignore-next-line
         Redis::connection(name: 'horizon')->client()->flushAll();
         Artisan::call('horizon:clear');
         Artisan::call('horizon:clear-metrics');

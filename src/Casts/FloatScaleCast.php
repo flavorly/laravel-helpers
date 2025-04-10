@@ -26,7 +26,7 @@ final class FloatScaleCast implements CastsAttributes
             return null;
         }
 
-        //@phpstan-ignore-next-line
+        // @phpstan-ignore-next-line
         return math($value)->ensureScale()->toFloat();
     }
 
