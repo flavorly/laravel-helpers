@@ -381,8 +381,9 @@ final class StrMacros implements RegistersMacros
      */
     public static function linesToCollection(): void
     {
-        Str::macro('lines_to_collection', function (
+        Str::macro('linesToCollection', function (
             string|array|null $value,
+            string|null $delimiter = null,
             bool $unique = true
         ): Collection {
             if (is_null($value)) {
@@ -391,7 +392,7 @@ final class StrMacros implements RegistersMacros
             // Handle array input
             $items = is_array($value)
                 ? $value
-                : preg_split('/\r\n|\r|\n|\\\\n|\\\\r\\\\n|\\\\r|\x{2028}|\x{2029}|\x{0085}|\v|\f/u', $value);
+                : preg_split($delimiter !== null ? '/'.preg_quote($delimiter).'/u' : '/\r\n|\r|\n|\\\\n|\\\\r\\\\n|\\\\r|\x{2028}|\x{2029}|\x{0085}|\v|\f/u', $value);
 
             if (empty($items)) {
                 return collect();

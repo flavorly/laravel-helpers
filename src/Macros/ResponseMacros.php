@@ -12,7 +12,6 @@ class ResponseMacros implements RegistersMacros
     public static function register(): void
     {
         self::json();
-        self::inertia();
     }
 
     public static function json(): void
@@ -49,13 +48,4 @@ class ResponseMacros implements RegistersMacros
         }
     }
 
-    public static function inertia(): void
-    {
-        // Request Macros
-        if (! Request::hasMacro('isInertia')) {
-            Request::macro('isInertia', function () {
-                return request()->hasHeader('x-inertia');
-            });
-        }
-    }
 }

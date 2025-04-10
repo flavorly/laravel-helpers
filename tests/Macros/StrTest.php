@@ -12,7 +12,7 @@ class StrTest extends TestCase
     public function it_can_convert_lines_to_collection()
     {
         // Test basic string conversion
-        $result = Str::linesToCollection('apple,banana,cherry');
+        $result = Str::linesToCollection('apple,banana,cherry', ',');
         $this->assertInstanceOf(Collection::class, $result);
         $this->assertEquals(['apple', 'banana', 'cherry'], $result->all());
 
@@ -21,7 +21,7 @@ class StrTest extends TestCase
         $this->assertEquals(['apple', 'banana', 'cherry'], $result->all());
 
         // Test with duplicates and unique=true (default)
-        $result = Str::linesToCollection('apple,banana,apple,cherry');
+        $result = Str::linesToCollection('apple,banana,apple,cherry', ',');
         $this->assertEquals(['apple', 'banana', 'cherry'], $result->all());
 
         // Test with duplicates and unique=false
@@ -29,11 +29,11 @@ class StrTest extends TestCase
         $this->assertEquals(['apple', 'banana', 'apple', 'cherry'], $result->all());
 
         // Test with spaces and trimming
-        $result = Str::linesToCollection('  apple  ,  banana  , cherry  ');
+        $result = Str::linesToCollection('  apple  ,  banana  , cherry  ', ',');
         $this->assertEquals(['apple', 'banana', 'cherry'], $result->all());
 
         // Test with empty values
-        $result = Str::linesToCollection('apple,,banana,,cherry');
+        $result = Str::linesToCollection('apple,,banana,,cherry', ',');
         $this->assertEquals(['apple', 'banana', 'cherry'], $result->all());
 
         // Test with array input
@@ -41,7 +41,7 @@ class StrTest extends TestCase
         $this->assertEquals(['apple', 'banana', 'cherry'], $result->all());
 
         // Test with mixed case duplicates
-        $result = Str::linesToCollection('Apple,apple,APPLE,banana');
+        $result = Str::linesToCollection('Apple,apple,APPLE,banana', ',');
         $this->assertEquals(['Apple', 'apple', 'APPLE', 'banana'], $result->all());
     }
 
@@ -58,7 +58,7 @@ class StrTest extends TestCase
         $this->assertEquals(['apple'], $result->all());
 
         // Only delimiters
-        $result = Str::linesToCollection(',,,');
+        $result = Str::linesToCollection(',,,', ',');
         $this->assertEquals([], $result->all());
 
         // Only spaces
@@ -66,7 +66,7 @@ class StrTest extends TestCase
         $this->assertEquals([], $result->all());
 
         // Unicode characters
-        $result = Str::linesToCollection('café,résumé,naïve');
+        $result = Str::linesToCollection('café,résumé,naïve', ',');
         $this->assertEquals(['café', 'résumé', 'naïve'], $result->all());
     }
 }

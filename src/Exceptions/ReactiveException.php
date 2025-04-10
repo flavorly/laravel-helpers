@@ -232,14 +232,6 @@ class ReactiveException extends Exception
     }
 
     /**
-     * Returns the response to Hybridly/Inertia
-     */
-    protected function toInertia(): void
-    {
-        // Implement this method with notifications, dialog, etc.
-    }
-
-    /**
      * Render the exception into an HTTP response or Hybridly Response.
      */
     public function render(Request $request): null|string|RedirectResponse|Response|bool
@@ -261,11 +253,6 @@ class ReactiveException extends Exception
     public function response(?Request $request = null): null|bool|string|RedirectResponse|Response
     {
         $request = $request ?? request();
-        $isInertia = method_exists($request, 'isInertia') || filled($request->header('X-Inertia'));
-        if ($isInertia) {
-            $this->toInertia();
-            throw ValidationException::withMessages([$this->type => $this->getMessage()]);
-        }
 
         if ($request->wantsJson()) {
             return $this->toJson();

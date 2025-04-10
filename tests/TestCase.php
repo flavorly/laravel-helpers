@@ -3,6 +3,7 @@
 namespace Flavorly\LaravelHelpers\Tests;
 
 use Flavorly\LaravelHelpers\LaravelHelpersServiceProvider;
+use Flavorly\LaravelHelpers\Macros\StrMacros;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -15,6 +16,8 @@ class TestCase extends Orchestra
         Factory::guessFactoryNamesUsing(
             fn (string $modelName) => 'Flavorly\\LaravelHelpers\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
+
+        StrMacros::register();
     }
 
     protected function getPackageProviders($app)

@@ -17,7 +17,6 @@ return [
 
     'typescript' => [
         'replace' => [
-            'Flavorly.InertiaFlash.' => '',
             'Flavorly.LaravelHelpers.' => '',
         ],
     ],
