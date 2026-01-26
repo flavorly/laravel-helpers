@@ -23,11 +23,11 @@ trait HasSlug
 {
     public static function bootHasSlug(): void
     {
-        static::creating(function (Model&ImplementsSlug $model) {
+        static::creating(function (Model&ImplementsSlug $model): void {
             $model->slug = Str::uuid()->toString();
         });
 
-        static::created(function (Model&ImplementsSlug $model) {
+        static::created(function (Model&ImplementsSlug $model): void {
             $model->update([
                 'slug' => Str::slug(collect($model->getSlugAttributes())
                     ->map(fn (string $attribute) => $model->$attribute)
@@ -35,7 +35,7 @@ trait HasSlug
             ]);
         });
 
-        static::updating(function (Model&ImplementsSlug $model) {
+        static::updating(function (Model&ImplementsSlug $model): void {
             $attributes = $model->getSlugAttributes();
             if ($model->isDirty($attributes)) {
                 $model->slug = Str::slug(collect($model->getSlugAttributes())

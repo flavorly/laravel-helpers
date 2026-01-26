@@ -5,13 +5,13 @@ use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\RoundingMode;
 use Flavorly\LaravelHelpers\Helpers\Math\Math;
 
-beforeEach(function () {
+beforeEach(function (): void {
     config()->set('laravel-helpers.math.scale', 2);
     config()->set('laravel-helpers.math.storage_scale', 10);
     config()->set('laravel-helpers.math.rounding_mode', RoundingMode::DOWN);
 });
 
-it('performs basic sum operations', function ($initial, $addend, $expected, $scale = null) {
+it('performs basic sum operations', function (float|int|string|\Brick\Math\BigDecimal $initial, float|int|string $addend, $expected, ?int $scale = null): void {
     $math = Math::of($initial, $scale);
     $result = $math->sum($addend)->toFloat();
     expect($result)->toBe($expected);
@@ -28,7 +28,7 @@ it('performs basic sum operations', function ($initial, $addend, $expected, $sca
     'addition resulting in negative' => [5, -10, -5.00],
 ]);
 
-it('can chain sum operations', function () {
+it('can chain sum operations', function (): void {
     $result = Math::of(5)
         ->sum(3)
         ->sum(2)
@@ -38,7 +38,7 @@ it('can chain sum operations', function () {
     expect($result)->toBe('11.50');
 });
 
-it('handles different scales and rounding modes correctly', function () {
+it('handles different scales and rounding modes correctly', function (): void {
     // Test with HALF_DOWN (default)
     $resultHalfDown = Math::of(1.23456)
         ->scale(4)
@@ -78,7 +78,7 @@ it('handles different scales and rounding modes correctly', function () {
     expect($resultScale5)->toBe(3.58023);
 });
 
-it('handles edge cases correctly', function () {
+it('handles edge cases correctly', function (): void {
     // Testing numbers that are exactly at the rounding point
     $resultEdge = Math::of(1.23455)
         ->scale(4)
@@ -96,7 +96,7 @@ it('handles edge cases correctly', function () {
     expect($resultNegative)->toBe(-3.5802);
 });
 
-it('preserves immutability in sum operations', function () {
+it('preserves immutability in sum operations', function (): void {
     $initial = Math::of(5);
     $result1 = $initial->sum(3);
     $result2 = $initial->sum(2);
@@ -106,7 +106,7 @@ it('preserves immutability in sum operations', function () {
     expect($initial->toString())->toBe('5.00');
 });
 
-it('handles very small numbers correctly', function () {
+it('handles very small numbers correctly', function (): void {
     // Default scale (2)
     $result1 = Math::of(0.001)->sum(0.002)->toString();
     expect($result1)->toBe('0.00');
@@ -183,7 +183,7 @@ it('handles very small numbers correctly', function () {
     expect($result12)->toBe('0.000000');
 });
 
-it('performs basic arithmetic operations correctly', function () {
+it('performs basic arithmetic operations correctly', function (): void {
     // Subtraction
     expect(Math::of(10)->subtract(3)->toFloat())->toBe(7.00);
     expect(Math::of(5.5)->subtract(2.2)->toFloat())->toBe(3.30);
@@ -259,7 +259,7 @@ it('performs basic arithmetic operations correctly', function () {
     expect(Math::of(1000000000000)->divide(1000000)->toFloat())->toBe(1000000.00);
 });
 
-it('compares numbers correctly', function () {
+it('compares numbers correctly', function (): void {
     // isLessThan
     expect(Math::of(5)->isLessThan(10))->toBeTrue();
     expect(Math::of(10)->isLessThan(5))->toBeFalse();
@@ -302,7 +302,7 @@ it('compares numbers correctly', function () {
     expect(Math::of(10.0313131)->scale(10)->isLessThan(9.0313131))->toBeFalse();
 });
 
-it('performs utility operations correctly', function () {
+it('performs utility operations correctly', function (): void {
     expect(Math::of(-5)->absolute()->toFloat())->toBe(5.0);
     expect(Math::of(3)->negative()->toFloat())->toBe(-3.0);
     expect(Math::of(3.7)->ceil()->toFloat())->toBe(4.0);
@@ -310,7 +310,7 @@ it('performs utility operations correctly', function () {
     expect(Math::of('3.14159')->round(2)->toString())->toBe('3.14');
 });
 
-it('handles percentage operations correctly', function () {
+it('handles percentage operations correctly', function (): void {
     $math = Math::of(100);
 
     // Testing addition of percentage
@@ -322,7 +322,7 @@ it('handles percentage operations correctly', function () {
     expect($newMath->toFloat())->toBe(50.0);
 });
 
-it('can chain multiple different operations', function () {
+it('can chain multiple different operations', function (): void {
     $result = Math::of(100)
         ->addPercentage(10)  // 110
         ->multiply(2)        // 220
@@ -335,7 +335,7 @@ it('can chain multiple different operations', function () {
     expect($result)->toBe(150.0);
 });
 
-it('handles errors correctly', function () {
+it('handles errors correctly', function (): void {
     $this->expectException(DivisionByZeroException::class);
 
     Math::of(100)->divide(0)->toFloat();
@@ -349,7 +349,7 @@ it('handles errors correctly', function () {
     Math::of(-100)->absolute()->negative()->toInt();
 });
 
-it('maintains precision with very large numbers', function () {
+it('maintains precision with very large numbers', function (): void {
     $largeNumber = Math::of('999999999999999999999999999999')->sum('1')->scale(0);
     expect($largeNumber->toString())->toBe('1000000000000000000000000000000');
 
@@ -357,7 +357,7 @@ it('maintains precision with very large numbers', function () {
     expect($multiplied->toString())->toBe('100000000000000000000000000000000000000000000000000');
 });
 
-it('converts to different formats correctly', function () {
+it('converts to different formats correctly', function (): void {
     $math = Math::of(1234.5678);
 
     expect($math->toInt())->toBe(1234);
@@ -365,7 +365,7 @@ it('converts to different formats correctly', function () {
     expect($math->toString())->toBe('1234.56');
 });
 
-it('allows changing scale and rounding mode mid-calculation', function () {
+it('allows changing scale and rounding mode mid-calculation', function (): void {
     $math = Math::of(100.123456)
         ->scale(5)  // Now scale is set first
         ->multiply(2)
@@ -375,7 +375,7 @@ it('allows changing scale and rounding mode mid-calculation', function () {
     expect($math->toString())->toBe('200.24694');  // Adjusted expected outcome
 });
 
-it('handles operations with mixed scales correctly', function () {
+it('handles operations with mixed scales correctly', function (): void {
     $num1 = Math::of('123.456', 3); // Scale 3
     $num2 = Math::of('0.7891', 4);  // Scale 4
 
@@ -383,7 +383,7 @@ it('handles operations with mixed scales correctly', function () {
     expect($result->toString())->toBe('124.245'); // Expecting concatenated scale 4
 });
 
-it('can convert to storage scale', function () {
+it('can convert to storage scale', function (): void {
     $storage_scale = 10;
     $storage_value = Math::of(100.123456)->storageScale($storage_scale)->toStorageScale();
     $decode_value = Math::of($storage_value)->storageScale($storage_scale)->fromStorage()->toFloat();
@@ -392,14 +392,14 @@ it('can convert to storage scale', function () {
         ->and($storage_value)->toBe(1001200000000);
 });
 
-it('give the percentage of the number', function () {
+it('give the percentage of the number', function (): void {
     expect(Math::of(100)->toPercentageOf(50)->toFloat())->toBe(50.0);
     expect(Math::of(100)->toPercentageOf(30)->toFloat())->toBe(30.0);
     expect(Math::of(123.45)->toPercentageOf(50)->toFloat())->toBe(61.72);
     expect(Math::of(99.99)->toPercentageOf(10)->toFloat())->toBe(9.99);
 });
 
-it('calculates percentage difference correctly', function () {
+it('calculates percentage difference correctly', function (): void {
 
     expect(Math::of(100)->differenceInPercentage(50))->toBe(50.0);
     expect(Math::of(50)->differenceInPercentage(100))->toBe(100.0);
@@ -408,7 +408,7 @@ it('calculates percentage difference correctly', function () {
     expect(Math::of(50.1)->differenceInPercentage(100.5))->toBe(100.59);
 });
 
-test('average calculation', function () {
+test('average calculation', function (): void {
     // Integers
     expect(Math::average(2, 3, 4, 5)->toFloat())->toBe(3.5);
     expect(Math::average(0, 100)->toFloat())->toBe(50.0);
@@ -418,7 +418,7 @@ test('average calculation', function () {
     expect(Math::average(3.33, 3.33)->toFloat())->toBe(3.33);
 });
 
-test('percentage of calculation', function () {
+test('percentage of calculation', function (): void {
     // Integers
     expect(Math::of(50)->percentageOf(100))->toBe(50.00);
     expect(Math::of(25)->percentageOf(100))->toBe(25.00);
@@ -428,7 +428,7 @@ test('percentage of calculation', function () {
     expect(Math::of(2)->percentageOf(3))->toBe(66.66);
 });
 
-it('respects config scale and rounding mode', function () {
+it('respects config scale and rounding mode', function (): void {
     // Mock config values
     config(['laravel-helpers.math.scale' => 4]);
     config(['laravel-helpers.math.rounding_mode' => RoundingMode::UP]);

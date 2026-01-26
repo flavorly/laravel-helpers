@@ -2,7 +2,7 @@
 
 use Flavorly\LaravelHelpers\Helpers\AsciiTransliteration\AsciiTransliteration;
 
-it('transliterates strings correctly', function ($input, $expected) {
+it('transliterates strings correctly', function (string $input, $expected): void {
     expect((new AsciiTransliteration)->transliterate($input))->toBe($expected);
 })->with([
     ['', ''],

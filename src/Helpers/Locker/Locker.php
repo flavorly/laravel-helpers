@@ -65,8 +65,6 @@ class Locker
 
     /**
      * Set the ID of the lock to the given value
-     *
-     * @return $this
      */
     public function id(string $id): Locker
     {
@@ -77,8 +75,6 @@ class Locker
 
     /**
      * Set a prefix to the id, useful for multi tenancy or testing
-     *
-     * @return $this
      */
     public function prefix(string $prefix): Locker
     {
@@ -129,7 +125,7 @@ class Locker
     public function lock(?Closure $closure = null): bool|string
     {
         if ($this->isLocked() && $this->executedIfAlreadyLocked) {
-            if ($closure) {
+            if ($closure instanceof Closure) {
                 $closure();
             }
 
@@ -144,7 +140,7 @@ class Locker
 
                 return (string) $this->owner;
             }
-        } catch (LockTimeoutException $exception) {
+        } catch (LockTimeoutException) {
             if ($this->executedIfAlreadyLocked && $closure) {
                 $closure();
 
@@ -261,9 +257,9 @@ class Locker
     protected function getModelName(): string
     {
         try {
-            return (new ReflectionClass($this->model))->getShortName();
-        } catch (Exception $e) {
-            $result = strrchr(__CLASS__, '\\');
+            return new ReflectionClass($this->model)->getShortName();
+        } catch (Exception) {
+            $result = strrchr(self::class, '\\');
 
             return substr($result !== false ? $result : '', 1);
         }

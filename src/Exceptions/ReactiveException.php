@@ -8,7 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Throwable;
 
 class ReactiveException extends Exception
 {
@@ -62,14 +61,6 @@ class ReactiveException extends Exception
      * If the report should be sent to the exception handler.
      */
     protected bool $shouldReport = false;
-
-    /**
-     * GenericException constructor.
-     */
-    public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
 
     /**
      * Append additional title
@@ -224,10 +215,10 @@ class ReactiveException extends Exception
      */
     protected function getNameFormatted(): mixed
     {
-        $explode = explode('\\', get_class($this));
+        $explode = explode('\\', static::class);
         $parts = array_values(array_slice($explode, -1));
 
-        return data_get($parts, 0, get_class($this));
+        return data_get($parts, 0, static::class);
     }
 
     /**
@@ -251,7 +242,7 @@ class ReactiveException extends Exception
      */
     public function response(?Request $request = null): null|bool|string|RedirectResponse|Response
     {
-        $request = $request ?? request();
+        $request ??= request();
 
         if ($request->wantsJson()) {
             return $this->toJson();

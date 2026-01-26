@@ -17,9 +17,7 @@ trait RecyclesFactories
         $query = $this->newModel()->newQuery();
 
         $attributes = array_merge(
-            array_map(function ($resolver) {
-                return $resolver();
-            }, $this->parentResolvers()),
+            array_map(fn ($resolver) => $resolver(), $this->parentResolvers()),
             $attributes
         );
 
@@ -38,11 +36,7 @@ trait RecyclesFactories
         }
 
         return $query
-            ->when(empty($attributesToSearch), function ($query) {
-                return $query->inRandomOrder();
-            })
-            ->firstOr(function () use ($rawAttributes) {
-                return $this->createOne($rawAttributes);
-            });
+            ->when(empty($attributesToSearch), fn ($query) => $query->inRandomOrder())
+            ->firstOr(fn () => $this->createOne($rawAttributes));
     }
 }

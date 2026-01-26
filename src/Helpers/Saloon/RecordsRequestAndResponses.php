@@ -17,11 +17,11 @@ class RecordsRequestAndResponses
     public static function saloonDebugging(): void
     {
         if (app()->hasDebugModeEnabled() && config('laravel-helpers.debug-requests', true)) {
-            Config::globalMiddleware()->onRequest(function (PendingRequest $pendingRequest) {
+            Config::globalMiddleware()->onRequest(function (PendingRequest $pendingRequest): void {
                 ray('Dispatching Request', $pendingRequest);
 
                 $pendingRequest->config()->set([
-                    'on_stats' => function (TransferStats $stats) {
+                    'on_stats' => function (TransferStats $stats): void {
                         // @codeCoverageIgnoreStart
                         ray('[Guzzle Response Body]', (string) $stats->getResponse()?->getBody());
                         // @codeCoverageIgnoreEnd
@@ -29,7 +29,7 @@ class RecordsRequestAndResponses
                 ]);
             });
 
-            Config::globalMiddleware()->onResponse(function (Response $response) {
+            Config::globalMiddleware()->onResponse(function (Response $response): void {
                 ray('Response Received', $response);
             });
         }

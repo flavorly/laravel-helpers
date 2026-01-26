@@ -8,8 +8,9 @@ use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
+use Stringable;
 
-final class Math
+final class Math implements Stringable
 {
     public function __construct(
         /**
@@ -100,8 +101,6 @@ final class Math
 
     /**
      * Sets the rounding mode up or down
-     *
-     * @return $this
      */
     public function roundingMode(RoundingMode $mode): Math
     {
@@ -112,8 +111,6 @@ final class Math
 
     /**
      * Sets the rounding mode to down
-     *
-     * @return $this
      */
     public function roundDown(): Math
     {
@@ -124,8 +121,6 @@ final class Math
 
     /**
      * Sets the rounding mode to up
-     *
-     * @return $this
      */
     public function roundUp(): Math
     {
@@ -136,8 +131,6 @@ final class Math
 
     /**
      * Sets the scale of the number
-     *
-     * @return $this
      */
     public function scale(int $scale): Math
     {
@@ -148,8 +141,6 @@ final class Math
 
     /**
      * Sets the storage scale of the number
-     *
-     * @return $this
      */
     public function storageScale(int $storageScale): Math
     {
@@ -299,8 +290,6 @@ final class Math
 
     /**
      * Returns the negative value of the current number
-     *
-     * @return $this|self
      */
     public function negative(): Math
     {

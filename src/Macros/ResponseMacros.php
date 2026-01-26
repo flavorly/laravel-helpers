@@ -17,33 +17,19 @@ class ResponseMacros implements RegistersMacros
     {
         // Response Macros
         if (! ResponseFactory::hasMacro('failed')) {
-            ResponseFactory::macro('failed', function (
-                array $data = [],
-                $status = 400,
-                array $headers = [],
-                $options = 0
-            ): JsonResponse {
-                return response()->json(array_merge([
-                    'status' => 'fail',
-                    'success' => false,
-                    'code' => $status,
-                ], $data), $status, $headers, $options);
-            });
+            ResponseFactory::macro('failed', fn (array $data = [], $status = 400, array $headers = [], $options = 0): JsonResponse => response()->json(array_merge([
+                'status' => 'fail',
+                'success' => false,
+                'code' => $status,
+            ], $data), $status, $headers, $options));
         }
 
         if (! ResponseFactory::hasMacro('success')) {
-            ResponseFactory::macro('success', function (
-                array $data = [],
-                $status = 200,
-                array $headers = [],
-                $options = 0
-            ): JsonResponse {
-                return response()->json(array_merge([
-                    'status' => 'ok',
-                    'success' => true,
-                    'code' => $status,
-                ], $data), $status, $headers, $options);
-            });
+            ResponseFactory::macro('success', fn (array $data = [], $status = 200, array $headers = [], $options = 0): JsonResponse => response()->json(array_merge([
+                'status' => 'ok',
+                'success' => true,
+                'code' => $status,
+            ], $data), $status, $headers, $options));
         }
     }
 }

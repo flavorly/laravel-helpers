@@ -1,4 +1,5 @@
 includes:
+    - phpstan-baseline.neon
     - vendor/larastan/larastan/extension.neon
 parameters:
     editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'
@@ -14,6 +15,7 @@ parameters:
         - tests/*/Unit/*
         - tests/*/Datasets/*
         - src/Helpers/LaravelData
+    tmpDir: build/phpstan
     checkOctaneCompatibility: true
     checkModelProperties: true
     treatPhpDocTypesAsCertain: false

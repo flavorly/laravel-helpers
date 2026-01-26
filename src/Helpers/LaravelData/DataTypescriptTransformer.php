@@ -2,6 +2,7 @@
 
 namespace Flavorly\LaravelHelpers\Helpers\LaravelData;
 
+use phpDocumentor\Reflection\Type;
 use ReflectionClass;
 use ReflectionProperty;
 use Spatie\LaravelData\Concerns\BaseData;
@@ -19,13 +20,18 @@ use Spatie\TypeScriptTransformer\TypeProcessors\ReplaceDefaultsTypeProcessor;
 
 class DataTypescriptTransformer extends BaseDataTypeScriptTransformer
 {
+    #[\Override]
     public function canTransform(ReflectionClass $class): bool
     {
         $implementsBaseData = $class->implementsInterface(BaseDataContract::class);
+        if ($class->isSubclassOf(BaseData::class)) {
+            return true;
+        }
 
-        return $class->isSubclassOf(BaseData::class) || $implementsBaseData;
+        return $implementsBaseData;
     }
 
+    #[\Override]
     protected function typeProcessors(): array
     {
         return [
@@ -38,6 +44,7 @@ class DataTypescriptTransformer extends BaseDataTypeScriptTransformer
         ];
     }
 
+    #[\Override]
     protected function transformProperties(
         ReflectionClass $class,
         MissingSymbolsCollection $missingSymbols
@@ -46,18 +53,18 @@ class DataTypescriptTransformer extends BaseDataTypeScriptTransformer
         $dataClass = app(DataConfig::class)->getDataClass($class->getName());
 
         $isOptional = $dataClass->attributes->contains(
-            fn (object $attribute) => $attribute instanceof TypeScriptOptional
+            fn (object $attribute): bool => $attribute instanceof TypeScriptOptional
         );
 
         $nullablesAreOptional = $this->config->shouldConsiderNullAsOptional();
 
         return array_reduce(
             $this->resolveProperties($class),
-            function (string $carry, ReflectionProperty $property) use ($isOptional, $dataClass, $missingSymbols, $nullablesAreOptional) {
+            function (string $carry, ReflectionProperty $property) use ($isOptional, $dataClass, $missingSymbols, $nullablesAreOptional): string {
                 /** @var \Spatie\LaravelData\Support\DataProperty $dataProperty */
                 $dataProperty = $dataClass->properties[$property->getName()];
                 $type = $this->resolveTypeForProperty($property, $dataProperty, $missingSymbols);
-                if ($type === null) {
+                if (! $type instanceof Type) {
                     return $carry;
                 }
 
@@ -69,7 +76,7 @@ class DataTypescriptTransformer extends BaseDataTypeScriptTransformer
 
                 $isOptional = $isOptional
                     || $dataProperty->attributes->contains(
-                        fn (object $attribute) => $attribute instanceof TypeScriptOptional
+                        fn (object $attribute): bool => $attribute instanceof TypeScriptOptional
                     )
                     || ($dataProperty->type->lazyType && $dataProperty->type->lazyType !== ClosureLazy::class)
                     || $dataProperty->type->isOptional

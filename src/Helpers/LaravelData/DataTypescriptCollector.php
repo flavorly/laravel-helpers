@@ -10,6 +10,7 @@ use Spatie\TypeScriptTransformer\Structures\TransformedType;
 
 class DataTypescriptCollector extends BaseDataTypeScriptCollector
 {
+    #[\Override]
     public function getTransformedType(ReflectionClass $class): ?TransformedType
     {
         if (! $class->isSubclassOf(BaseData::class) && ! $class->implementsInterface(BaseDataContract::class)) {

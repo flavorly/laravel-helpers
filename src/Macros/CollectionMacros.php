@@ -78,8 +78,6 @@ class CollectionMacros implements RegistersMacros
 
     public static function toJsonResponse(): void
     {
-        Collection::macro('toJsonResponse', function (): JsonResponse {
-            return response()->json($this);
-        });
+        Collection::macro('toJsonResponse', fn (): JsonResponse => response()->json($this));
     }
 }

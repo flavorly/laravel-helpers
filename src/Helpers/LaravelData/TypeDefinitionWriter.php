@@ -8,12 +8,13 @@ use Spatie\TypeScriptTransformer\Writers\TypeDefinitionWriter as BaseWriter;
 
 class TypeDefinitionWriter extends BaseWriter
 {
+    #[\Override]
     public function format(TypesCollection $collection): string
     {
         $replacements = config('laravel-helpers.typescript.replace', []);
 
         return Str::of(parent::format($collection))
-            ->replaceMatches('/(\w+)(\??:)\s*([\w\s\[\]:<>,{}\.]+)(\s*\|\s*null)?;/', function ($matches) {
+            ->replaceMatches('/(\w+)(\??:)\s*([\w\s\[\]:<>,{}\.]+)(\s*\|\s*null)?;/', function ($matches): string {
                 $name = $matches[1];
                 $type = $matches[3];
                 $isOptional = $matches[2] === '?:' || isset($matches[4]);

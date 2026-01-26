@@ -52,7 +52,7 @@ final class CollectionOfData implements Castable
                 }
 
                 return is_array($data)
-                    ? (new $collectionClass($data))->map(fn ($item) => $dataClass::from($item))
+                    ? new $collectionClass($data)->map(fn ($item) => $dataClass::from($item))
                     : null;
             }
 

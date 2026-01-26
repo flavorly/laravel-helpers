@@ -86,6 +86,7 @@ class FixtureExtended extends Fixture
     /**
      * Get the resulting MockResponse
      */
+    #[\Override]
     public function getMockResponse(): ?MockResponse
     {
         $storage = $this->storage;
@@ -101,7 +102,7 @@ class FixtureExtended extends Fixture
             $data = $body->all();
 
             // If we have a JSON response, we can replace the data's paths
-            $jsonBody = is_a($body, JsonBodyRepository::class);
+            $jsonBody = $body instanceof JsonBodyRepository;
             if ($jsonBody) {
                 // We have a json response
                 foreach ($this->pathPlaceholders as $key => $value) {
@@ -123,13 +124,13 @@ class FixtureExtended extends Fixture
             }
 
             return new MockResponse(
-                $jsonBody ? json_decode($data, true) : $data,
+                $jsonBody ? json_decode((string) $data, true) : $data,
                 $recordedResponse->statusCode,
                 $recordedResponse->headers
             );
         }
 
-        if (MockConfig::isThrowingOnMissingFixtures() === true) {
+        if (MockConfig::isThrowingOnMissingFixtures()) {
             throw new FixtureMissingException($fixturePath);
         }
 

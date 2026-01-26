@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class StrTest extends TestCase
 {
     /** @test */
-    public function it_can_convert_lines_to_collection()
+    public function it_can_convert_lines_to_collection(): void
     {
         // Test basic string conversion
         $result = Str::linesToCollection('apple,banana,cherry', ',');
@@ -46,7 +46,7 @@ class StrTest extends TestCase
     }
 
     /** @test */
-    public function it_handles_edge_cases_for_lines_to_collection()
+    public function it_handles_edge_cases_for_lines_to_collection(): void
     {
         // Empty string
         $result = Str::linesToCollection('');

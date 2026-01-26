@@ -4,6 +4,7 @@ namespace Flavorly\LaravelHelpers\Concerns;
 
 use Illuminate\Support\Collection;
 use ReflectionClass;
+use ReflectionParameter;
 
 trait HasDataPropertiesReflection
 {
@@ -19,8 +20,8 @@ trait HasDataPropertiesReflection
         $class = static::class;
 
         return collect(self::$paramCache[$class] ??= self::resolveParams())
-            ->when(! empty($only), fn ($params) => $params->filter(fn ($param) => in_array($param, $only)))
-            ->when(! empty($except), fn ($params) => $params->reject(fn ($param) => in_array($param, $except)))
+            ->when(! empty($only), fn ($params) => $params->filter(fn ($param): bool => in_array($param, $only)))
+            ->when(! empty($except), fn ($params) => $params->reject(fn ($param): bool => in_array($param, $except)))
             ->values();
     }
 
@@ -34,9 +35,9 @@ trait HasDataPropertiesReflection
     public static function getParamsPrefixed(string $prefix, array $only = [], array $except = []): Collection
     {
         return collect(self::getParams())
-            ->when(! empty($only), fn ($params) => $params->filter(fn ($param) => in_array($param, $only)))
-            ->when(! empty($except), fn ($params) => $params->reject(fn ($param) => in_array($param, $except)))
-            ->map(fn (string $param) => "$prefix.$param")
+            ->when(! empty($only), fn ($params) => $params->filter(fn ($param): bool => in_array($param, $only)))
+            ->when(! empty($except), fn ($params) => $params->reject(fn ($param): bool => in_array($param, $except)))
+            ->map(fn (string $param): string => "$prefix.$param")
             ->values();
     }
 
@@ -52,7 +53,7 @@ trait HasDataPropertiesReflection
         $constructor = $reflection->getConstructor();
 
         return $constructor
-            ? array_map(fn ($param) => $param->getName(), $constructor->getParameters())
+            ? array_map(fn (ReflectionParameter $param): string => $param->getName(), $constructor->getParameters())
             : [];
     }
 

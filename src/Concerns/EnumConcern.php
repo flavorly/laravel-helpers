@@ -15,13 +15,7 @@ trait EnumConcern
      */
     public function equals(self ...$others): bool
     {
-        foreach ($others as $other) {
-            if ($this->value === $other->value) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($others, fn ($other): bool => $this->value === $other->value);
     }
 
     /**
@@ -37,7 +31,7 @@ trait EnumConcern
     /**
      * Choose your pill, red or blue
      *
-     * @param  EnumConcern  ...$others
+     * @param  static  ...$others
      */
     public function is(self ...$others): bool
     {
@@ -47,7 +41,7 @@ trait EnumConcern
     /**
      * Choose your pill, red or blue
      *
-     * @param  EnumConcern  ...$others
+     * @param  static  ...$others
      */
     public function isNot(self ...$others): bool
     {
@@ -80,7 +74,7 @@ trait EnumConcern
      */
     public static function toOptions(?callable $map = null, ?callable $filter = null): Collection
     {
-        $map = $map ?? fn (self $type) => new OptionData($type->getLabel() ?? '', $type->value);
+        $map ??= fn (self $type): OptionData => new OptionData($type->getLabel() ?? '', $type->value);
 
         return collect(self::cases())
             ->when($filter, fn ($collection) => $collection->filter($filter))
@@ -111,7 +105,7 @@ trait EnumConcern
     public static function toArray(): array
     {
         return array_map(
-            fn (self $type) => $type->getLabel(),
+            fn (self $type): ?string => $type->getLabel(),
             self::cases()
         );
     }
@@ -143,7 +137,7 @@ trait EnumConcern
     public static function tryFromLabel(string $label): ?static
     {
         return collect(self::cases())
-            ->filter(fn (self $type) => mb_strtolower($type->getLabel() ?? '') === mb_strtolower($label))
+            ->filter(fn (self $type): bool => mb_strtolower($type->getLabel() ?? '') === mb_strtolower($label))
             ->first();
     }
 
@@ -169,6 +163,6 @@ trait EnumConcern
     public static function firstWhere(string $value, mixed $default = null): ?static
     {
         return collect(self::cases())
-            ->first(fn (self $type) => $type->value === $value) ?? $default;
+            ->first(fn (self $type): bool => $type->value === $value) ?? $default;
     }
 }
