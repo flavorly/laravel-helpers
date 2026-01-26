@@ -100,16 +100,19 @@ final class StrMacros implements RegistersMacros
             if (! class_exists(\Brick\Money\Money::class)) {
                 return $money;
             }
-            /** @var Authenticatable $user */
+            /** @var Model|Authenticatable|null $user */
             $user = auth()->user();
-            $currency ??= $user?->wallet_currency ?? config('app.default_currency');
+            $currency ??= $user?->getAttribute('wallet_currency') ?? config('app.default_currency');
+
+            /** @var string $locale */
+            $locale = $user?->getAttribute('locale') ?? config('app.locale');
 
             return Money::of(
                 $money,
                 // @phpstan-ignore-next-line
                 config('app.default_currency', $currency),
                 roundingMode: RoundingMode::UP
-            )->formatTo($user?->locale ?? config('app.locale'));
+            )->formatToLocale($locale);
         });
     }
 
@@ -138,7 +141,9 @@ final class StrMacros implements RegistersMacros
                 return 'IG';
             }
 
-            return mb_convert_encoding($acronym, 'UTF-8', 'auto');
+            $result = mb_convert_encoding($acronym, 'UTF-8', 'auto');
+
+            return $result !== false ? $result : $acronym;
         });
     }
 
@@ -391,7 +396,6 @@ final class StrMacros implements RegistersMacros
                     return rtrim($item, '\\');
                 })
                 ->filter()
-                // @phpstan-ignore-next-line
                 ->when($unique, function (Collection $items) {
                     // Use a temporary hash map for faster duplicate checking
                     $seen = [];

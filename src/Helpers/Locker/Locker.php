@@ -54,12 +54,15 @@ class Locker
         // locks_App\Models\User_1
         $key = $this->model->getKeyName();
 
+        /** @var \Illuminate\Support\Carbon|null $createdAt */
+        $createdAt = $this->model->getAttribute('created_at');
+
         return Str::snake(sprintf(
             '%s_%s_%s_%s',
             'locks',
             strtolower($this->getModelName()),
             $this->model->{$key},
-            $this->model?->created_at?->timestamp ?? '-',
+            $createdAt !== null ? $createdAt->timestamp : '-',
         ));
     }
 

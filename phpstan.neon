@@ -9,6 +9,7 @@ parameters:
     level: 9
     ignoreErrors:
         - '#on Brick\\Math\\BigDecimal\|float\|int\|string#'
+        - identifier: trait.unused
     scanFiles:
     excludePaths:
         - tests/*/Feature/*

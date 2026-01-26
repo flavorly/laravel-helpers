@@ -23,9 +23,9 @@ if (! function_exists('get_morph_map_for')) {
     /**
      * Get the class name from a class string.
      */
-    function get_morph_map_for(string $class, mixed $default = null): string|int
+    function get_morph_map_for(string $class, mixed $default = null): string
     {
-        return collect(Relation::$morphMap)->flip()->get($class, $class) ?? $default;
+        return (string) (collect(Relation::$morphMap)->flip()->get($class, $class) ?? $default);
     }
 }
 

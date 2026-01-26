@@ -18,19 +18,25 @@ class RecordsRequestAndResponses
     {
         if (app()->hasDebugModeEnabled() && config('laravel-helpers.debug-requests', true)) {
             Config::globalMiddleware()->onRequest(function (PendingRequest $pendingRequest): void {
-                ray('Dispatching Request', $pendingRequest);
+                if (function_exists('ray')) {
+                    ray('Dispatching Request', $pendingRequest);
+                }
 
                 $pendingRequest->config()->set([
                     'on_stats' => function (TransferStats $stats): void {
                         // @codeCoverageIgnoreStart
-                        ray('[Guzzle Response Body]', (string) $stats->getResponse()?->getBody());
+                        if (function_exists('ray')) {
+                            ray('[Guzzle Response Body]', (string) $stats->getResponse()?->getBody());
+                        }
                         // @codeCoverageIgnoreEnd
                     },
                 ]);
             });
 
             Config::globalMiddleware()->onResponse(function (Response $response): void {
-                ray('Response Received', $response);
+                if (function_exists('ray')) {
+                    ray('Response Received', $response);
+                }
             });
         }
     }
