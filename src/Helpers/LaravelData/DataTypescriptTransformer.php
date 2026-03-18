@@ -8,6 +8,7 @@ use ReflectionProperty;
 use Spatie\LaravelData\Concerns\BaseData;
 use Spatie\LaravelData\Contracts\BaseData as BaseDataContract;
 use Spatie\LaravelData\Support\DataConfig;
+use Spatie\LaravelData\Support\DataProperty;
 use Spatie\LaravelData\Support\Lazy\ClosureLazy;
 use Spatie\LaravelData\Support\TypeScriptTransformer\DataTypeScriptTransformer as BaseDataTypeScriptTransformer;
 use Spatie\LaravelData\Support\TypeScriptTransformer\RemoveLazyTypeProcessor;
@@ -61,7 +62,7 @@ class DataTypescriptTransformer extends BaseDataTypeScriptTransformer
         return array_reduce(
             $this->resolveProperties($class),
             function (string $carry, ReflectionProperty $property) use ($isOptional, $dataClass, $missingSymbols, $nullablesAreOptional): string {
-                /** @var \Spatie\LaravelData\Support\DataProperty $dataProperty */
+                /** @var DataProperty $dataProperty */
                 $dataProperty = $dataClass->properties[$property->getName()];
                 $type = $this->resolveTypeForProperty($property, $dataProperty, $missingSymbols);
                 if (! $type instanceof Type) {

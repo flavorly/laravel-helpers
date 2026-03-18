@@ -97,7 +97,7 @@ final class StrMacros implements RegistersMacros
     public static function money(): void
     {
         Str::macro('money', function (string $money, ?string $currency = null): string {
-            if (! class_exists(\Brick\Money\Money::class)) {
+            if (! class_exists(Money::class)) {
                 return $money;
             }
             /** @var Model|Authenticatable|null $user */
@@ -190,7 +190,7 @@ final class StrMacros implements RegistersMacros
     public static function extractors(): void
     {
         /**
-         * @return \Illuminate\Support\Collection<string>
+         * @return Collection<string>
          */
         Str::macro('extract_strings', fn (string|array $value, string $delimiter = ','): Collection => Collection::wrap($value)
             // @phpstan-ignore-next-line
@@ -201,7 +201,7 @@ final class StrMacros implements RegistersMacros
             ->values());
 
         /**
-         * @return \Illuminate\Support\Collection<int>
+         * @return Collection<int>
          */
         Str::macro('extract_integers', fn (string|array $value, string $delimiter = ','): Collection => Collection::wrap($value)
             // @phpstan-ignore-next-line
@@ -213,7 +213,7 @@ final class StrMacros implements RegistersMacros
             ->values());
 
         /**
-         * @return \Illuminate\Support\Collection<float>
+         * @return Collection<float>
          */
         Str::macro('extract_floats', fn (string|array $value, string $delimiter = ','): Collection => Collection::wrap($value)
             // @phpstan-ignore-next-line
@@ -225,7 +225,7 @@ final class StrMacros implements RegistersMacros
             ->values());
 
         /**
-         * @return \Illuminate\Support\Collection<bool>
+         * @return Collection<bool>
          */
         Str::macro('extract_booleans', fn (string|array $value, string $delimiter = ','): Collection => Collection::wrap($value)
             // @phpstan-ignore-next-line

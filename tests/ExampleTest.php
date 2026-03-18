@@ -1,5 +1,6 @@
 <?php
 
+use Brick\Math\BigDecimal;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\NegativeNumberException;
 use Brick\Math\RoundingMode;
@@ -11,7 +12,7 @@ beforeEach(function (): void {
     config()->set('laravel-helpers.math.rounding_mode', RoundingMode::DOWN);
 });
 
-it('performs basic sum operations', function (float|int|string|\Brick\Math\BigDecimal $initial, float|int|string $addend, $expected, ?int $scale = null): void {
+it('performs basic sum operations', function (float|int|string|BigDecimal $initial, float|int|string $addend, $expected, ?int $scale = null): void {
     $math = Math::of($initial, $scale);
     $result = $math->sum($addend)->toFloat();
     expect($result)->toBe($expected);

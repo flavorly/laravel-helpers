@@ -63,7 +63,7 @@ class CollectionMacros implements RegistersMacros
              *
              * @param  array|Collection  $ids
              * @param  string  $idField
-             * @return \Illuminate\Support\Collection
+             * @return Collection
              */
             Collection::macro('orderByIds', function ($ids, string $idField = 'id'): Collection {
                 $flippedIds = array_flip($ids instanceof Collection ? $ids->all() : $ids);

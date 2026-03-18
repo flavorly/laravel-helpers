@@ -4,6 +4,7 @@ namespace Flavorly\LaravelHelpers\Helpers;
 
 use Closure;
 use Illuminate\Cache\RateLimiter;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Traits\ForwardsCalls;
 
 /**
@@ -51,7 +52,7 @@ final class RateLimiterHelper
     /**
      * Get the rate limiter key from the request like Laravel
      *
-     * @see \Illuminate\Routing\Middleware\ThrottleRequests::resolveRequestSignature
+     * @see ThrottleRequests::resolveRequestSignature
      */
     public static function getKey(string $key, string $by, bool $hashed = true): string
     {

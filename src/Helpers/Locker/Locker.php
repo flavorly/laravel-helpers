@@ -9,6 +9,8 @@ use Illuminate\Cache\RedisStore;
 use Illuminate\Contracts\Cache\Lock;
 use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Redis\Connections\Connection;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -54,7 +56,7 @@ class Locker
         // locks_App\Models\User_1
         $key = $this->model->getKeyName();
 
-        /** @var \Illuminate\Support\Carbon|null $createdAt */
+        /** @var Carbon|null $createdAt */
         $createdAt = $this->model->getAttribute('created_at');
 
         return Str::snake(sprintf(
@@ -239,7 +241,7 @@ class Locker
     {
         /** @var RedisStore $store */
         $store = Cache::store('redis');
-        /** @var \Illuminate\Redis\Connections\Connection $redis */
+        /** @var Connection $redis */
         $redis = $store->lockConnection();
 
         // Get all locks for this model - match the correct pattern
@@ -277,7 +279,7 @@ class Locker
     {
         /** @var RedisStore $store */
         $store = Cache::store('redis');
-        /** @var \Illuminate\Redis\Connections\Connection $redis */
+        /** @var Connection $redis */
         $redis = $store->lockConnection();
 
         // Get all locks with pattern locks_*
