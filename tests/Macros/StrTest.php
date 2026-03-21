@@ -1,72 +1,73 @@
 <?php
 
-namespace Flavorly\LaravelHelpers\Tests\Macros;
-
-use Flavorly\LaravelHelpers\Tests\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class StrTest extends TestCase
-{
-    /** @test */
-    public function it_can_convert_lines_to_collection(): void
-    {
-        // Test basic string conversion
-        $result = Str::linesToCollection('apple,banana,cherry', ',');
-        $this->assertInstanceOf(Collection::class, $result);
-        $this->assertEquals(['apple', 'banana', 'cherry'], $result->all());
+it('converts lines to collection with basic string', function (): void {
+    $result = Str::linesToCollection('apple,banana,cherry', ',');
+    expect($result)
+        ->toBeInstanceOf(Collection::class)
+        ->all()->toBe(['apple', 'banana', 'cherry']);
+});
 
-        // Test with custom delimiter
-        $result = Str::linesToCollection('apple|banana|cherry', '|');
-        $this->assertEquals(['apple', 'banana', 'cherry'], $result->all());
+it('converts lines to collection with custom delimiter', function (): void {
+    $result = Str::linesToCollection('apple|banana|cherry', '|');
+    expect($result->all())->toBe(['apple', 'banana', 'cherry']);
+});
 
-        // Test with duplicates and unique=true (default)
-        $result = Str::linesToCollection('apple,banana,apple,cherry', ',');
-        $this->assertEquals(['apple', 'banana', 'cherry'], $result->all());
+it('removes duplicates by default', function (): void {
+    $result = Str::linesToCollection('apple,banana,apple,cherry', ',');
+    expect($result->all())->toBe(['apple', 'banana', 'cherry']);
+});
 
-        // Test with duplicates and unique=false
-        $result = Str::linesToCollection('apple,banana,apple,cherry', ',', false);
-        $this->assertEquals(['apple', 'banana', 'apple', 'cherry'], $result->all());
+it('keeps duplicates when unique is false', function (): void {
+    $result = Str::linesToCollection('apple,banana,apple,cherry', ',', false);
+    expect($result->all())->toBe(['apple', 'banana', 'apple', 'cherry']);
+});
 
-        // Test with spaces and trimming
-        $result = Str::linesToCollection('  apple  ,  banana  , cherry  ', ',');
-        $this->assertEquals(['apple', 'banana', 'cherry'], $result->all());
+it('trims whitespace from items', function (): void {
+    $result = Str::linesToCollection('  apple  ,  banana  , cherry  ', ',');
+    expect($result->all())->toBe(['apple', 'banana', 'cherry']);
+});
 
-        // Test with empty values
-        $result = Str::linesToCollection('apple,,banana,,cherry', ',');
-        $this->assertEquals(['apple', 'banana', 'cherry'], $result->all());
+it('filters out empty values', function (): void {
+    $result = Str::linesToCollection('apple,,banana,,cherry', ',');
+    expect($result->all())->toBe(['apple', 'banana', 'cherry']);
+});
 
-        // Test with array input
-        $result = Str::linesToCollection(['apple', 'banana', 'apple', 'cherry']);
-        $this->assertEquals(['apple', 'banana', 'cherry'], $result->all());
+it('accepts array input', function (): void {
+    $result = Str::linesToCollection(['apple', 'banana', 'apple', 'cherry']);
+    expect($result->all())->toBe(['apple', 'banana', 'cherry']);
+});
 
-        // Test with mixed case duplicates
-        $result = Str::linesToCollection('Apple,apple,APPLE,banana', ',');
-        $this->assertEquals(['Apple', 'apple', 'APPLE', 'banana'], $result->all());
-    }
+it('preserves case-sensitive duplicates', function (): void {
+    $result = Str::linesToCollection('Apple,apple,APPLE,banana', ',');
+    expect($result->all())->toBe(['Apple', 'apple', 'APPLE', 'banana']);
+});
 
-    /** @test */
-    public function it_handles_edge_cases_for_lines_to_collection(): void
-    {
-        // Empty string
-        $result = Str::linesToCollection('');
-        $this->assertInstanceOf(Collection::class, $result);
-        $this->assertEquals([], $result->all());
+it('handles empty string', function (): void {
+    $result = Str::linesToCollection('');
+    expect($result)
+        ->toBeInstanceOf(Collection::class)
+        ->all()->toBe([]);
+});
 
-        // Single value
-        $result = Str::linesToCollection('apple');
-        $this->assertEquals(['apple'], $result->all());
+it('handles single value', function (): void {
+    $result = Str::linesToCollection('apple');
+    expect($result->all())->toBe(['apple']);
+});
 
-        // Only delimiters
-        $result = Str::linesToCollection(',,,', ',');
-        $this->assertEquals([], $result->all());
+it('handles only delimiters', function (): void {
+    $result = Str::linesToCollection(',,,', ',');
+    expect($result->all())->toBe([]);
+});
 
-        // Only spaces
-        $result = Str::linesToCollection('   ');
-        $this->assertEquals([], $result->all());
+it('handles only spaces', function (): void {
+    $result = Str::linesToCollection('   ');
+    expect($result->all())->toBe([]);
+});
 
-        // Unicode characters
-        $result = Str::linesToCollection('café,résumé,naïve', ',');
-        $this->assertEquals(['café', 'résumé', 'naïve'], $result->all());
-    }
-}
+it('handles unicode characters', function (): void {
+    $result = Str::linesToCollection('café,résumé,naïve', ',');
+    expect($result->all())->toBe(['café', 'résumé', 'naïve']);
+});

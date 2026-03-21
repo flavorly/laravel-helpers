@@ -20,20 +20,20 @@
         "laravel/framework": "^12|^13",
         "laravel/prompts": "^0.3",
         "league/iso3166": "^4.4",
-        "spatie/laravel-data": "^4.19",
-        "spatie/laravel-package-tools": "^1.92",
+        "spatie/laravel-data": "^4.20",
+        "spatie/laravel-package-tools": "^1.93",
         "spatie/laravel-typescript-transformer": "^2.5"
     },
     "require-dev": {
         "brick/money": "^0.11.0",
-        "larastan/larastan": "^v3.3.0",
-        "laravel/pint": "^1.26",
-        "nunomaduro/collision": "^8.8",
-        "orchestra/testbench": "^10.9.0",
-        "pestphp/pest": "^4.1",
+        "larastan/larastan": "^v3.9",
+        "laravel/pint": "^1.29",
+        "nunomaduro/collision": "^8.9",
+        "orchestra/testbench": "^10.9|^11.0",
+        "pestphp/pest": "^4.4",
         "pestphp/pest-plugin-arch": "^4.0",
         "pestphp/pest-plugin-laravel": "^4.0",
-        "saloonphp/saloon": "^3.14"
+        "saloonphp/saloon": "^3.15"
     },
     "autoload": {
         "psr-4": {

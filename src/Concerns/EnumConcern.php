@@ -77,7 +77,7 @@ trait EnumConcern
         $map ??= fn (self $type): OptionData => new OptionData($type->getLabel() ?? '', $type->value);
 
         return collect(self::cases())
-            ->when($filter, fn ($collection) => $collection->filter($filter))
+            ->when($filter !== null, fn ($collection) => $collection->filter($filter))
             ->map($map);
     }
 

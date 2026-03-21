@@ -2,7 +2,7 @@
 
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\DivisionByZeroException;
-use Brick\Math\Exception\NegativeNumberException;
+use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\RoundingMode;
 use Flavorly\LaravelHelpers\Helpers\Math\Math;
 
@@ -336,19 +336,13 @@ it('can chain multiple different operations', function (): void {
     expect($result)->toBe(150.0);
 });
 
-it('handles errors correctly', function (): void {
-    $this->expectException(DivisionByZeroException::class);
-
+it('throws on division by zero', function (): void {
     Math::of(100)->divide(0)->toFloat();
+})->throws(DivisionByZeroException::class);
 
-    $this->expectException(TypeError::class);
-
+it('throws on invalid number format', function (): void {
     Math::of('invalid')->sum('oops');
-
-    $this->expectException(NegativeNumberException::class);
-
-    Math::of(-100)->absolute()->negative()->toInt();
-});
+})->throws(NumberFormatException::class);
 
 it('maintains precision with very large numbers', function (): void {
     $largeNumber = Math::of('999999999999999999999999999999')->sum('1')->scale(0);
