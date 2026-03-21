@@ -2,6 +2,7 @@
 
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\RoundingMode;
 use Flavorly\LaravelHelpers\Helpers\Math\Math;
 
@@ -341,7 +342,7 @@ it('throws on division by zero', function (): void {
 
 it('throws on invalid number format', function (): void {
     Math::of('invalid')->sum('oops');
-})->throws(\Brick\Math\Exception\NumberFormatException::class);
+})->throws(NumberFormatException::class);
 
 it('maintains precision with very large numbers', function (): void {
     $largeNumber = Math::of('999999999999999999999999999999')->sum('1')->scale(0);

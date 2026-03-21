@@ -2,6 +2,7 @@
 
 use Flavorly\LaravelHelpers\Data\OptionData;
 use Flavorly\LaravelHelpers\Tests\Fixtures\TestStatus;
+use Illuminate\Support\Collection;
 
 it('checks equality with equals()', function (): void {
     expect(TestStatus::Active->equals(TestStatus::Active))->toBeTrue();
@@ -61,7 +62,7 @@ it('converts to values array', function (): void {
 it('converts to collection', function (): void {
     $collection = TestStatus::toCollection();
 
-    expect($collection)->toBeInstanceOf(\Illuminate\Support\Collection::class)
+    expect($collection)->toBeInstanceOf(Collection::class)
         ->toHaveCount(3);
 });
 
